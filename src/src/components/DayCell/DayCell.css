@@ -1,0 +1,33 @@
+@reference "../../styles/index.css";
+
+.day-cell {
+  @apply size-9 font-semibold items-center justify-center flex border-2 transition-all duration-300 rounded-xs border-gray-300 bg-white text-gray-700;
+}
+
+.day-cell.is-past-day {
+  @apply bg-gray-100 font-medium;
+}
+
+.day-cell.is-weekend {
+  @apply bg-gray-300 border-black/10 text-gray-600;
+}
+
+.day-cell.is-past-day {
+  @apply text-gray-500;
+}
+
+.day-cell.is-today {
+  @apply border-indigo-600 text-gray-700;
+}
+
+.day-cell.is-holiday {
+  @apply text-indigo-600 bg-black/5 border-black/10;
+}
+
+.day-cell.has-event {
+  @apply bg-indigo-600 border-indigo-700 text-indigo-50;
+}
+
+.day-cell.has-event.is-past-day {
+  @apply bg-indigo-500 border-indigo-600 text-gray-50;
+}
