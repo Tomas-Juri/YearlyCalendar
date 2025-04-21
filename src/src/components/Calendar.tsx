@@ -11,8 +11,6 @@ type Props = {
 export const Calendar = ({ year, today }: Props) => {
   const events = useAppSelector((state) => state.events);
   const holidays = new Holidays("CZ");
-  const holidaysInYear = holidays.getHolidays(year);
-  console.log(holidaysInYear);
 
   const months = Array.from({ length: 12 }, (_, i) => i + 1); // [1, 2, ..., 12]
 
@@ -97,49 +95,46 @@ export const Calendar = ({ year, today }: Props) => {
   }
 
   return (
-    <div className="flex-grow h-full flex flex-col px-6 justify-center overflow-x-auto">
-      <div>
-        <div>{year}</div>
-        <div className="flex gap-1 mb-1 w-fit">
-          <div>
-            <div className="h-9 w-16 font-medium items-center justify-center flex border-2 rounded-xs opacity-0 pointer-events-none" />
+    <div className="flex-grow flex flex-col px-6 justify-center overflow-x-auto">
+      <div className="flex gap-1 mb-1 w-fit">
+        <div>
+          <div className="h-9 w-16 font-medium items-center justify-center flex border-2 rounded-xs opacity-0 pointer-events-none" />
+        </div>
+        {headerDays.map((day, i) => (
+          <div key={i}>
+            <div className="size-9 font-medium items-center justify-center flex border-2 rounded-xs border-slate-300 bg-slate-200 text-slate-700">
+              {day.substring(0, 2)}
+            </div>
           </div>
-          {headerDays.map((day) => (
-            <div>
-              <div className="size-9 font-medium items-center justify-center flex border-2 rounded-xs border-gray-300 bg-gray-200 text-gray-700">
-                {day.substring(0, 2)}
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="flex flex-col gap-1 w-fit">
-          {monthModels.map((month) => (
-            <div className="flex gap-1">
-              <div>
-                <div className="flex-1 h-9 w-16 font-medium items-center justify-center flex border-2 rounded-xs border-gray-300 bg-gray-200">
-                  {monthName(month.month).substring(0, 3)}
-                </div>
-              </div>
-              {Array.from({ length: month.offset }).map(() => (
-                <div>
-                  <div className="flex-1 size-9 font-medium items-center justify-center flex border-2 rounded-xs opacity-0 pointer-events-none" />
-                </div>
-              ))}
-              {month.days.map((day) => (
-                <DayCell
-                  year={year}
-                  month={month.month}
-                  day={day}
-                  events={getEventsForDay(events, month.month, day)}
-                  hasHoliday={hasHoliday(month.month, day)}
-                  today={today}
-                />
-              ))}
-            </div>
-          ))}
-        </div>
+        ))}
       </div>
-      <div></div>
+      <div className="flex flex-col gap-1 w-fit">
+        {monthModels.map((month) => (
+          <div key={month.month} className="flex gap-1">
+            <div>
+              <div className="flex-1 h-9 w-16 font-medium items-center justify-center flex border-2 rounded-xs border-slate-300 bg-slate-200">
+                {monthName(month.month).substring(0, 3)}
+              </div>
+            </div>
+            {Array.from({ length: month.offset }).map((_, i) => (
+              <div key={i}>
+                <div className="flex-1 size-9 font-medium items-center justify-center flex border-2 rounded-xs opacity-0 pointer-events-none" />
+              </div>
+            ))}
+            {month.days.map((day) => (
+              <DayCell
+                key={`${year}-${month}-${day}`}
+                year={year}
+                month={month.month}
+                day={day}
+                events={getEventsForDay(events, month.month, day)}
+                hasHoliday={hasHoliday(month.month, day)}
+                today={today}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

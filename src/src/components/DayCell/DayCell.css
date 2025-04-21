@@ -1,33 +1,57 @@
 @reference "../../styles/index.css";
 
 .day-cell {
-  @apply size-9 font-semibold items-center justify-center flex border-2 transition-all duration-300 rounded-xs border-gray-300 bg-white text-gray-700;
+  @apply size-9 font-semibold items-center justify-center flex border-2 transition-all duration-300 rounded-xs border-slate-300 bg-white text-slate-700;
 }
 
 .day-cell.is-past-day {
-  @apply bg-gray-100 font-medium;
-}
-
-.day-cell.is-weekend {
-  @apply bg-gray-300 border-black/10 text-gray-600;
+  @apply bg-slate-100 font-medium;
 }
 
 .day-cell.is-past-day {
-  @apply text-gray-500;
+  @apply text-slate-500;
 }
 
 .day-cell.is-today {
-  @apply border-indigo-600 text-gray-700;
+  @apply border-indigo-600 text-slate-700;
 }
 
 .day-cell.is-holiday {
   @apply text-indigo-600 bg-black/5 border-black/10;
 }
 
-.day-cell.has-event {
+.day-cell.is-weekend {
+  @apply bg-slate-300 border-black/10 text-slate-600;
+}
+
+.day-cell.is-weekend.day-cell.is-past-day {
+  @apply text-slate-400 bg-slate-200;
+}
+
+.day-cell.is-weekend.day-cell.is-holiday {
+  @apply text-indigo-600;
+}
+
+.day-cell.has-event:not(.is-second-half) {
   @apply bg-indigo-600 border-indigo-700 text-indigo-50;
 }
 
+.day-cell.has-event.is-second-half {
+  @apply border-b-indigo-700 border-r-indigo-700;
+}
+
 .day-cell.has-event.is-past-day {
-  @apply bg-indigo-500 border-indigo-600 text-gray-50;
+  @apply bg-indigo-500 border-indigo-600 text-slate-50;
+}
+
+.day-cell .day-cell-second-half {
+  @apply absolute pointer-events-none border-[16px] border-transparent  right-[2px] bottom-[2px];
+}
+
+.day-cell.is-second-half .day-cell-second-half {
+  @apply border-b-indigo-600 border-r-indigo-600;
+}
+
+.day-cell .day-cell-text {
+  @apply relative z-50;
 }

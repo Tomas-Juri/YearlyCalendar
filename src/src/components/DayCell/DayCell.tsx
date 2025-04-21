@@ -1,6 +1,6 @@
 import { classNames } from "primereact/utils";
-import { Event } from "../../App";
 import "./DayCell.css";
+import { Event } from "../../redux/eventsSlice";
 
 type Props = {
   year: number;
@@ -22,6 +22,13 @@ export const DayCell = (props: Props) => {
   const isPastDay = props.today > date;
   const isToday = props.today.getTime() === date.getTime();
 
+  const isSecondHalf =
+    hasEvent &&
+    props.events.every(
+      (event) =>
+        event.from.getTime() === date.getTime() && event.fromType == "2nd Half"
+    );
+
   return (
     <div className="relative">
       <div
@@ -31,9 +38,11 @@ export const DayCell = (props: Props) => {
           "is-holiday": isHoliday,
           "is-past-day": isPastDay,
           "is-today": isToday,
+          "is-second-half": isSecondHalf,
         })}
       >
-        {props.day}
+        <div className="day-cell-second-half"></div>
+        <span className="day-cell-text"> {props.day}</span>
       </div>
       {eventsCount > 1 && (
         <div className="absolute z-10 bottom-full left-full text-[0.5rem] flex size-4  bg-blue-900 shadow border border-blue-700 rounded-full items-center justify-center text-white font-bold translate-y-3/4 -translate-x-3/4">

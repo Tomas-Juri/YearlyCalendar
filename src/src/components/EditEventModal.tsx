@@ -5,16 +5,16 @@ import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { useEffect, useState } from "react";
 import {
-  closeAddEventModal,
-  confirmAddEventModal,
+  closeEditEventModal,
+  confirmEditEventModal,
   DayType,
 } from "../redux/eventsSlice";
 import { useAppSelector, useAppDispatch } from "../redux/hooks";
 import { Nullable } from "primereact/ts-helpers";
 import { Dropdown } from "primereact/dropdown";
 
-export const NewEventModal = () => {
-  const modal = useAppSelector((state) => state.addEventModal);
+export const EditEventModal = () => {
+  const modal = useAppSelector((state) => state.editEventModal);
   const dispatch = useAppDispatch();
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -29,31 +29,25 @@ export const NewEventModal = () => {
   ];
 
   useEffect(() => {
-    setTitle("");
-    setDescription("");
-    setFrom(null);
-    setFromType("Full day");
-    setTo(null);
-    setToType("Full day");
-  }, [modal.opened]);
-
-  useEffect(() => {
-    if (from && to === null) {
-      setTo(from);
-    }
-  }, [from, to]);
+    setTitle(modal.opened ? modal.event.title : "");
+    setDescription(modal.opened ? modal.event.description : "");
+    setFrom(modal.opened ? modal.event.from : null);
+    setFromType(modal.opened ? modal.event.fromType : "Full day");
+    setTo(modal.opened ? modal.event.to : null);
+    setToType(modal.opened ? modal.event.toType : "Full day");
+  }, [modal]);
 
   return (
     <Dialog
-      header="Add new Event"
+      header="Edit Event"
       visible={modal.opened}
       draggable={false}
       resizable={false}
       closeOnEscape
       dismissableMask
-      className="w-[28rem]"
+      className="w-[32rem]"
       onHide={() => {
-        dispatch(closeAddEventModal());
+        dispatch(closeEditEventModal());
       }}
       headerClassName="bg-slate-50"
       contentClassName="bg-slate-50"
@@ -66,7 +60,7 @@ export const NewEventModal = () => {
 
           if (from && to)
             dispatch(
-              confirmAddEventModal({
+              confirmEditEventModal({
                 title,
                 description,
                 from,
@@ -143,7 +137,7 @@ export const NewEventModal = () => {
             severity="secondary"
             label="Cancel"
             text
-            onClick={() => dispatch(closeAddEventModal())}
+            onClick={() => dispatch(closeEditEventModal())}
           />
           <Button type="submit" label="Confirm" icon="pi pi-check" />
         </div>

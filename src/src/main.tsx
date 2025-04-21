@@ -3,9 +3,12 @@ import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import { Provider } from "react-redux";
 import { store } from "./redux/store.ts";
-import { PrimeReactProvider } from "primereact/api";
+import { locale, PrimeReactProvider, updateLocaleOption } from "primereact/api";
 import "./styles/index.css";
 import "primeicons/primeicons.css";
+
+updateLocaleOption("firstDayOfWeek", 1, "en");
+locale("en");
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
