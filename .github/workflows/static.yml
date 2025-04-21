@@ -36,16 +36,18 @@ jobs:
         with:
           node-version: 20.x
       - name: Install dependencies
+        working-directory: ./src
         run: npm ci
       - name: Build
         run: npm run build
+        working-directory: ./src
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload entire repository
-          path: './dist/'
+          path: './src/dist'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
