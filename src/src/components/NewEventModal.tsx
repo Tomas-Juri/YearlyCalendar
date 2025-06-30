@@ -79,24 +79,26 @@ export const NewEventModal = () => {
       >
         <div className="flex flex-col gap-1">
           <label htmlFor="title" className="text-sm">
-            Title
+            Title <span className="text-red-600" title="Required">*</span>
           </label>
           <InputText
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             id="title"
             className="p-inputtext-sm bg-white"
+            required
           />
         </div>
         <div className="flex gap-4">
           <div className="flex flex-col gap-1">
             <label htmlFor="dates" className="text-sm">
-              From
+              From <span className="text-red-600" title="Required">*</span>
             </label>
             <Calendar
               value={from}
               onChange={(e) => setFrom(e.value)}
               className="p-inputtext-sm bg-white"
+              required
             />
             <Dropdown
               value={fromType}
@@ -109,12 +111,13 @@ export const NewEventModal = () => {
 
           <div className="flex flex-col gap-1">
             <label htmlFor="dates" className="text-sm">
-              To
+              To <span className="text-red-600" title="Required">*</span>
             </label>
             <Calendar
               value={to}
               onChange={(e) => setTo(e.value)}
               className="p-inputtext-sm bg-white"
+              required
             />
             <Dropdown
               value={toType}
@@ -145,7 +148,14 @@ export const NewEventModal = () => {
             text
             onClick={() => dispatch(closeAddEventModal())}
           />
-          <Button type="submit" label="Confirm" icon="pi pi-check" />
+          <Button
+            type="submit"
+            label="Confirm"
+            icon="pi pi-check"
+            disabled={
+              !title.trim() || !from || !to
+            }
+          />
         </div>
       </form>
     </Dialog>
