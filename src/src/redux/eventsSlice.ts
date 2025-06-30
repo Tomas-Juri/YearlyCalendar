@@ -97,6 +97,7 @@ export const eventsSlice = createSlice({
         (event) => event.id !== action.payload.id
       );
       state.deleteEventModal = { opened: false };
+      state.editEventModal = { opened: false };
     },
   },
 });

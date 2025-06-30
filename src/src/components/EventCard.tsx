@@ -11,8 +11,9 @@ export const EventCard = ({ event }: Props) => {
   const dispatch = useAppDispatch();
 
   return (
-    <div
-      className="px-5 py-4 snap-start w-full text-left hover:bg-slate-50 hover:z-10 transition duration-300 flex items-center gap-4"
+    <button
+      className="px-5 py-4 snap-start  w-full text-left cursor-pointer hover:bg-slate-50 hover:z-10 transition duration-300"
+      onClick={() => dispatch(openEditEventModal(event))}
       data-id={event.id}
     >
       <div className="flex-grow">
@@ -27,19 +28,6 @@ export const EventCard = ({ event }: Props) => {
             .join(" - ")}
         </p>
       </div>
-      <Button
-        icon="pi pi-pen-to-square"
-        className="p-button p-button-sm p-button-primary"
-        onClick={() => dispatch(openEditEventModal(event))}
-        type="button"
-      />
-      <Button
-        icon="pi pi-trash"
-        className="p-button p-button-sm p-button-secondary"
-        onClick={() => dispatch(openDeleteEventModal(event))}
-        type="button"
-        aria-label="Delete"
-      />
-    </div>
+    </button>
   );
 };

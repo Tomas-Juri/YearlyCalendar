@@ -15,7 +15,7 @@ export const DeleteEventModal = () => {
       resizable={false}
       closeOnEscape
       dismissableMask
-      className="w-[32rem]"
+      className="w-[22rem]"
       onHide={() => dispatch(closeDeleteEventModal())}
       headerClassName="bg-slate-50"
       contentClassName="bg-slate-50"
