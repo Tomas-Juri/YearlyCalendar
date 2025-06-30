@@ -12,6 +12,12 @@ export type EventsState = {
         event: Event;
       }
     | { opened: false };
+  deleteEventModal:
+    | {
+        opened: true;
+        event: Event;
+      }
+    | { opened: false };
 };
 
 const initialState: EventsState = {
@@ -20,6 +26,9 @@ const initialState: EventsState = {
     opened: false,
   },
   editEventModal: {
+    opened: false,
+  },
+  deleteEventModal: {
     opened: false,
   },
 };
@@ -61,8 +70,14 @@ export const eventsSlice = createSlice({
     openEditEventModal: (state, action: PayloadAction<Event>) => {
       state.editEventModal = { opened: true, event: action.payload };
     },
+    openDeleteEventModal: (state, action: PayloadAction<Event>) => {
+      state.deleteEventModal = { opened: true, event: action.payload };
+    },
     closeEditEventModal: (state) => {
       state.editEventModal = { opened: false };
+    },
+    closeDeleteEventModal: (state) => {
+      state.deleteEventModal = { opened: false };
     },
     confirmEditEventModal: (state, action: PayloadAction<EditEvent>) => {
       if (state.editEventModal.opened) {
@@ -81,6 +96,7 @@ export const eventsSlice = createSlice({
       state.events = state.events.filter(
         (event) => event.id !== action.payload.id
       );
+      state.deleteEventModal = { opened: false };
     },
   },
 });
@@ -93,5 +109,7 @@ export const {
   openEditEventModal,
   closeEditEventModal,
   confirmEditEventModal,
+  openDeleteEventModal,
+  closeDeleteEventModal,
   confirmDeleteEvent,
 } = eventsSlice.actions;

@@ -1,6 +1,8 @@
-import { Event, openEditEventModal } from "../redux/eventsSlice";
+import { Event, openEditEventModal, openDeleteEventModal } from "../redux/eventsSlice";
 import { distinc } from "../utilities";
 import { useAppDispatch } from "../redux/hooks";
+import { Button } from "primereact/button";
+import { useRef } from "react";
 
 type Props = {
   event: Event;
@@ -10,9 +12,8 @@ export const EventCard = ({ event }: Props) => {
   const dispatch = useAppDispatch();
 
   return (
-    <button
-      className="px-5 py-4 snap-start  w-full text-left cursor-pointer hover:bg-slate-50 hover:z-10 transition duration-300"
-      onClick={() => dispatch(openEditEventModal(event))}
+    <div
+      className="px-5 py-4 snap-start w-full text-left hover:bg-slate-50 hover:z-10 transition duration-300 flex items-center gap-4"
       data-id={event.id}
     >
       <div className="flex-grow">
@@ -27,6 +28,19 @@ export const EventCard = ({ event }: Props) => {
             .join(" - ")}
         </p>
       </div>
-    </button>
+      <Button
+        icon="pi pi-pen-to-square"
+        className="p-button p-button-sm p-button-primary"
+        onClick={() => dispatch(openEditEventModal(event))}
+        type="button"
+      />
+      <Button
+        icon="pi pi-trash"
+        className="p-button p-button-sm p-button-secondary"
+        onClick={() => dispatch(openDeleteEventModal(event))}
+        type="button"
+        aria-label="Delete"
+      />
+    </div>
   );
 };
