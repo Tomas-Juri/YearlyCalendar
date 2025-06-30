@@ -2,7 +2,6 @@ import { Event, openEditEventModal, openDeleteEventModal } from "../redux/events
 import { distinc } from "../utilities";
 import { useAppDispatch } from "../redux/hooks";
 import { Button } from "primereact/button";
-import { useRef } from "react";
 
 type Props = {
   event: Event;
