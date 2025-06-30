@@ -2,6 +2,7 @@ import { EventBar } from "./components/EventBar";
 import { Calendar } from "./components/Calendar";
 import { NewEventModal } from "./components/NewEventModal";
 import { EditEventModal } from "./components/EditEventModal";
+import { DeleteEventModal } from "./components/DeleteEventModal";
 import { useAppSelector } from "./redux/hooks";
 import { isWeekend, eachDayOfInterval, isSameDay } from "date-fns";
 import Holidays from "date-holidays";
@@ -93,6 +94,7 @@ function App() {
       </div>
       <NewEventModal />
       <EditEventModal />
+      <DeleteEventModal />
     </div>
   );
 }
