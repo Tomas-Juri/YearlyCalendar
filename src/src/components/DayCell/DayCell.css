@@ -55,3 +55,7 @@
 .day-cell .day-cell-text {
   @apply relative z-50;
 }
+
+.day-cell.has-event.is-weekend.day-cell.is-holiday .day-cell-text {
+  @apply text-indigo-50;
+}
