@@ -32,7 +32,7 @@
   @apply text-indigo-600;
 }
 
-.day-cell.has-event:not(.is-second-half) {
+.day-cell.has-event:not(.is-second-half):not(.is-first-half) {
   @apply bg-indigo-600 border-indigo-700 text-indigo-50;
 }
 
@@ -60,4 +60,16 @@
 
 .day-cell.has-event.is-weekend.day-cell.is-holiday .day-cell-text {
   @apply text-indigo-50;
+}
+
+.day-cell .day-cell-first-half {
+  @apply absolute pointer-events-none border-[16px] border-transparent left-[2px] top-[2px];
+}
+
+.day-cell.is-first-half .day-cell-first-half {
+  @apply border-t-indigo-600 border-l-indigo-600;
+}
+
+.day-cell.is-full-day {
+  @apply bg-indigo-600 border-indigo-700 text-indigo-50;
 }

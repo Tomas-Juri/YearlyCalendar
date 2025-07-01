@@ -1,6 +1,6 @@
 import { classNames } from "primereact/utils";
 import "./DayCell.css";
-import { Event, openEditEventModal, openAddEventModal } from "../../redux/eventsSlice";
+import { Event, DayType, openEditEventModal, openAddEventModal } from "../../redux/eventsSlice";
 import { useAppDispatch } from "../../redux/hooks";
 import { useState, useRef, useEffect } from "react";
 
@@ -44,12 +44,22 @@ export const DayCell = (props: Props) => {
   const isPastDay = props.today > date;
   const isToday = props.today.getTime() === date.getTime();
 
-  const isSecondHalf =
-    hasEvent &&
-    props.events.every(
-      (event) =>
-        event.from.getTime() === date.getTime() && event.fromType == "2nd Half"
-    );
+  // Nová logika pro určení typu dne podle pozice v eventu
+  function getDayTypeForEvent(event: Event, date: Date): DayType {
+    if (event.from.getTime() === date.getTime()) {
+      return event.fromType;
+    } else if (event.to.getTime() === date.getTime()) {
+      return event.toType;
+    } else {
+      return "Full day";
+    }
+  }
+
+  // Pokud je na dni více eventů, zobrazíme "nejvýraznější" typ (Full day > půlden)
+  const dayTypes = props.events.map(event => getDayTypeForEvent(event, date));
+  const isSecondHalf = dayTypes.length > 0 && dayTypes.every(type => type === "2nd Half");
+  const isFirstHalf = dayTypes.length > 0 && dayTypes.every(type => type === "1st Half");
+  const isFullDay = dayTypes.length > 0 && dayTypes.every(type => type === "Full day");
 
   return (
     <div className="relative select-none">
@@ -61,6 +71,8 @@ export const DayCell = (props: Props) => {
           "is-past-day": isPastDay,
           "is-today": isToday,
           "is-second-half": isSecondHalf,
+          "is-first-half": isFirstHalf,
+          "is-full-day": isFullDay,
         })}
         onClick={() => {
           if (hasEvent) {
@@ -87,6 +99,7 @@ export const DayCell = (props: Props) => {
         aria-expanded={open || plusOpen}
       >
         {isSecondHalf && <div className="day-cell-second-half" />}
+        {isFirstHalf && <div className="day-cell-first-half" />}
         <span className="day-cell-text"> {props.day}</span>
       </div>
       {hasEvent && open && (

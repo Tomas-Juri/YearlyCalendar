@@ -135,7 +135,26 @@ export const Calendar = ({ year, today }: Props) => {
           </div>
         ))}
       </div>
-      <div className="text-xs text-slate-500 mt-6 text-left">Tip: Click a day to add or edit an event.</div>
+      <div className="flex flex-row items-center justify-between mt-6 text-xs w-full">
+        <span className="text-slate-500">Tip: Click a day to add or edit an event.</span>
+        <span className="flex flex-row items-center gap-6 text-slate-600 select-none">
+          {/* Full day */}
+          <span className="flex items-center gap-1">
+            <span className="inline-block w-4 h-4 rounded-xs bg-indigo-600 border border-indigo-700 align-middle"></span>
+            Full day
+          </span>
+          {/* 1st Half */}
+          <span className="flex items-center gap-1">
+            <svg width="16" height="16" className="inline-block align-middle"><polygon points="0,0 16,0 0,16" fill="#4f46e5" /></svg>
+            1st Half
+          </span>
+          {/* 2nd Half */}
+          <span className="flex items-center gap-1">
+            <svg width="16" height="16" className="inline-block align-middle"><polygon points="16,16 16,0 0,16" fill="#4f46e5" /></svg>
+            2nd Half
+          </span>
+        </span>
+      </div>
     </div>
   );
 };
