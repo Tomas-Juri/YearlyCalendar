@@ -30,7 +30,7 @@ export const DayCell = (props: Props) => {
     );
 
   return (
-    <div className="relative">
+    <div className="relative group">
       <div
         className={classNames(`day-cell`, {
           "has-event": hasEvent,
@@ -44,6 +44,18 @@ export const DayCell = (props: Props) => {
         <div className="day-cell-second-half"></div>
         <span className="day-cell-text"> {props.day}</span>
       </div>
+      {hasEvent && (
+        <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 bg-white border border-slate-300 rounded shadow px-4 py-2 text-sm text-slate-700 min-w-[12rem] z-50 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 space-y-1">
+          {props.events.map(e => (
+            <div key={e.id} className="flex flex-col">
+              <span className="font-semibold">{e.title}</span>
+              <span className="text-xs text-slate-500">
+                {e.from.toLocaleDateString("cs")} - {e.to?.toLocaleDateString("cs")}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
       {eventsCount > 1 && (
         <div className="absolute z-10 bottom-full left-full text-[0.5rem] flex size-4  bg-blue-900 shadow border border-blue-700 rounded-full items-center justify-center text-white font-bold translate-y-3/4 -translate-x-3/4">
           {eventsCount}

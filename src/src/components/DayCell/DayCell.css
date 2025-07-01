@@ -53,7 +53,7 @@
 }
 
 .day-cell .day-cell-text {
-  @apply relative z-50;
+  @apply relative z-10;
 }
 
 .day-cell.has-event.is-weekend.day-cell.is-holiday .day-cell-text {
