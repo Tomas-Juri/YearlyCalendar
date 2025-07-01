@@ -135,6 +135,7 @@ export const Calendar = ({ year, today }: Props) => {
           </div>
         ))}
       </div>
+      <div className="text-xs text-slate-500 mt-6 text-left">Tip: Click a day to add or edit an event.</div>
     </div>
   );
 };

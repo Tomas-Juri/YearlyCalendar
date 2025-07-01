@@ -58,6 +58,7 @@ function App() {
       <div className="flex flex-col w-full">
         <header className="bg-slate-50 border-b border-slate-300 px-8 py-4">
           <div className="font-semibold tracking-wide">Yearly calendar</div>
+          <div className="text-xs text-slate-500 mt-1 text-left">Tip: Click a day to add or edit an event.</div>
         </header>
         <main className="flex flex-grow relative">
           <EventBar />

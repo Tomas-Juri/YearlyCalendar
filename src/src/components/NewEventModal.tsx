@@ -31,7 +31,7 @@ export const NewEventModal = () => {
   useEffect(() => {
     setTitle("");
     setDescription("");
-    setFrom(null);
+    setFrom(modal.prefillDate ?? null);
     setFromType("Full day");
     setTo(null);
     setToType("Full day");

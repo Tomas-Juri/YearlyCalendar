@@ -5,6 +5,7 @@ export type EventsState = {
   events: Event[];
   addEventModal: {
     opened: boolean;
+    prefillDate?: Date;
   };
   editEventModal:
     | {
@@ -24,6 +25,7 @@ const initialState: EventsState = {
   events: [],
   addEventModal: {
     opened: false,
+    prefillDate: undefined,
   },
   editEventModal: {
     opened: false,
@@ -52,11 +54,13 @@ export const eventsSlice = createSlice({
   name: "events",
   initialState: initialState,
   reducers: {
-    openAddEventModal: (state) => {
+    openAddEventModal: (state, action: PayloadAction<Date | undefined>) => {
       state.addEventModal.opened = true;
+      state.addEventModal.prefillDate = action.payload;
     },
     closeAddEventModal: (state) => {
       state.addEventModal.opened = false;
+      state.addEventModal.prefillDate = undefined;
     },
     confirmAddEventModal: (state, action: PayloadAction<NewEvent>) => {
       state.events.push({
