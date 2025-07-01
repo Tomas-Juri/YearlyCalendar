@@ -41,7 +41,9 @@
 }
 
 .day-cell.has-event.is-past-day {
-  @apply bg-indigo-500 border-indigo-600 text-slate-50;
+  background-color: #6366f1 !important; /* bg-indigo-500 */
+  border-color: #4f46e5 !important;     /* border-indigo-600 */
+  color: #f8fafc !important;            /* text-slate-50 */
 }
 
 .day-cell .day-cell-second-half {

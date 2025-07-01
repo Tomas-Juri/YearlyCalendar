@@ -86,7 +86,7 @@ export const DayCell = (props: Props) => {
         aria-haspopup="dialog"
         aria-expanded={open || plusOpen}
       >
-        <div className="day-cell-second-half"></div>
+        {isSecondHalf && <div className="day-cell-second-half" />}
         <span className="day-cell-text"> {props.day}</span>
       </div>
       {hasEvent && open && (
@@ -106,7 +106,7 @@ export const DayCell = (props: Props) => {
           >
             ×
           </button>
-          <div className="pt-2">
+          <div className="pt-0">
             {props.events.map(e => (
               <button
                 key={e.id}
