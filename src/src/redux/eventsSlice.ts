@@ -65,8 +65,6 @@ export const eventsSlice = createSlice({
     confirmAddEventModal: (state, action: PayloadAction<NewEvent>) => {
       state.events.push({
         ...action.payload,
-        fromType: "Full day",
-        toType: "Full day",
         id: guid(),
       });
       state.addEventModal.opened = false;

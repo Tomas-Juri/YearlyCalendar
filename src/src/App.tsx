@@ -18,7 +18,7 @@ function App() {
   // Count working days (Mon–Fri, not public holidays)
   const vacationDays = events.reduce((total, event) => {
     if (isSameDay(event.from, event.to) && isWorkingDay(event.from)) {
-      return total + event.fromType === "Full Day" ? 1 : 0.5;
+      return total + (event.fromType === "Full day" ? 1 : 0.5);
     }
 
     const days = eachDayOfInterval({
@@ -29,17 +29,24 @@ function App() {
     const workingDays = days.filter(isWorkingDay);
 
     let count = workingDays.length;
-    if (
-      workingDays.some((day) => isSameDay(day, event.from)) &&
-      event.fromType !== "Full day"
-    )
-      count -= 0.5;
 
-    if (
-      workingDays.some((day) => isSameDay(day, event.to)) &&
-      event.toType !== "Full day"
-    )
-      count -= 0.5;
+    if (isSameDay(event.from, event.to)) {
+      if (event.fromType !== "Full day" || event.toType !== "Full day") {
+        count -= 0.5;
+      }
+    } else {
+      if (
+        workingDays.some((day) => isSameDay(day, event.from)) &&
+        event.fromType !== "Full day"
+      )
+        count -= 0.5;
+
+      if (
+        workingDays.some((day) => isSameDay(day, event.to)) &&
+        event.toType !== "Full day"
+      )
+        count -= 0.5;
+    }
 
     return total + count;
   }, 0);

@@ -119,13 +119,15 @@ export const NewEventModal = () => {
               className="p-inputtext-sm bg-white"
               required
             />
-            <Dropdown
-              value={toType}
-              onChange={(e) => setToType(e.value)}
-              options={items}
-              optionLabel="name"
-              className="p-inputtext-sm bg-white"
-            />
+            {from && to && from.toDateString() !== to.toDateString() && (
+              <Dropdown
+                value={toType}
+                onChange={(e) => setToType(e.value)}
+                options={items}
+                optionLabel="name"
+                className="p-inputtext-sm bg-white"
+              />
+            )}
           </div>
         </div>
         <div className="flex flex-col gap-1">
