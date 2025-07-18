@@ -85,15 +85,14 @@ export const YearPicker = () => {
                 className={`w-full text-left px-3 py-2 text-sm transition-colors ${
                   year === selectedYear
                     ? 'bg-indigo-50 text-indigo-700 font-medium'
+                    : year === currentYear
+                    ? 'text-slate-700 hover:bg-slate-50 font-semibold border-l-2 border-indigo-400'
                     : 'text-slate-700 hover:bg-slate-50'
                 }`}
                 role="option"
                 aria-selected={year === selectedYear}
               >
                 {year}
-                {year === currentYear && (
-                  <span className="ml-2 text-xs text-slate-500">(current)</span>
-                )}
               </button>
             ))}
           </div>
