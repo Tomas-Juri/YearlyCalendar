@@ -43,13 +43,12 @@ export const EventListDrawer = () => {
       <ConfirmPopup />
       
       {/* Event List Button */}
-      <button
+      <Button
         onClick={toggleDrawer}
-        className="px-3 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 text-sm font-medium"
+        label="Event List"
+        className=""
         aria-label="Toggle events list"
-      >
-        Event List
-      </button>
+      />
 
 
       {/* Drawer */}
