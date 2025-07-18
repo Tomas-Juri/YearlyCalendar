@@ -5,8 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
-    "build-gh": "tsc -b && vite build --base=/YearlyCalendar/",
+    "test": "node tests/run-all-tests.js",
+    "build": "npm run test && tsc -b && vite build",
+    "build-gh": "npm run test && tsc -b && vite build --base=/YearlyCalendar/",
+    "build-no-test": "tsc -b && vite build",
+    "build-gh-no-test": "tsc -b && vite build --base=/YearlyCalendar/",
     "lint": "eslint .",
     "preview": "vite preview"
   },
