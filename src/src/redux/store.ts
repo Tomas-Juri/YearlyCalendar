@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { eventsSlice, EventsState } from "./eventsSlice";
+import { migrateLocalStorage, cleanupOldBackups } from "../utils/migrations";
 
 const isIsoDate = (value: string) =>
   typeof value === "string" &&
@@ -27,27 +28,18 @@ function saveToLocalStorage(state: RootState) {
 // invalid output must be undefined
 function loadFromLocalStorage(): { events: EventsState } | undefined {
   try {
+    // Run migrations before loading data
+    migrateLocalStorage();
+    
     const serialisedState = localStorage.getItem("state");
     if (serialisedState === null) return undefined;
     const parsed = JSON.parse(serialisedState, reviver);
     
-    // If old format (direct events array), convert to new format
-    if (Array.isArray(parsed)) {
-      return {
-        events: {
-          events: parsed,
-          selectedYear: new Date().getFullYear(),
-          vacationAllowance: { [new Date().getFullYear()]: 27 },
-          addEventModal: { opened: false },
-          editEventModal: { opened: false },
-          deleteEventModal: { opened: false }
-        }
-      };
-    }
-    
     return parsed;
   } catch (exception) {
     console.warn("Unable to get state from local storage", exception);
+    // If loading fails after migration, clear state and start fresh
+    localStorage.removeItem("state");
     return undefined;
   }
 }
@@ -62,6 +54,15 @@ export const store = configureStore({
 // listen for store changes and use saveToLocalStorage to
 // save them to localStorage
 store.subscribe(() => saveToLocalStorage(store.getState()));
+
+// Clean up old backups on app start (keep only last 5)
+setTimeout(() => {
+  try {
+    cleanupOldBackups();
+  } catch (error) {
+    console.warn('Failed to cleanup old backups:', error);
+  }
+}, 1000); // Run after 1 second to not block app startup
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;

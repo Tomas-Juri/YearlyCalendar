@@ -86,7 +86,7 @@ export const EventListDrawer = () => {
         {/* Filter Controls */}
         <div className="flex-shrink-0 p-4 border-b border-slate-200">
           <div className="flex items-center">
-            <Checkbox inputId="showUpcoming" checked={showUpcomingOnly} onChange={e => setShowUpcomingOnly(e.checked)} />
+            <Checkbox inputId="showUpcoming" checked={showUpcomingOnly} onChange={e => setShowUpcomingOnly(e.checked ?? false)} />
             <label htmlFor="showUpcoming" className="ml-2 text-sm text-slate-600">Show upcoming events only</label>
           </div>
         </div>

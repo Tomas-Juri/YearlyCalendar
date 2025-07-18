@@ -10,6 +10,7 @@ import {
   confirmEditEventModal,
   openDeleteEventModal
 } from "./redux/eventsSlice";
+import "./utils/migrationDebug"; // Import debug tools in development
 
 function App() {
   const dispatch = useAppDispatch();
