@@ -1,6 +1,6 @@
-import { EventBar } from "./EventBar";
 import { Calendar } from "./Calendar";
 import { VacationSummary } from "./VacationSummary";
+import { EventListDrawer } from "./EventListDrawer";
 import { useAppSelector } from "../redux/hooks";
 import { Event } from "../redux/eventsSlice";
 
@@ -20,10 +20,14 @@ export const MainContent = () => {
 
   return (
     <main className="flex flex-grow relative">
-      <EventBar />
-      <div className="h-full flex flex-col">
+      <div className="h-full flex flex-col w-full">
         <Calendar year={year} today={today} events={yearEvents} />
         <VacationSummary />
+      </div>
+      
+      {/* Floating Event List Button */}
+      <div className="fixed bottom-6 left-6 z-30">
+        <EventListDrawer />
       </div>
     </main>
   );

@@ -5,7 +5,9 @@ export const AppHeader = () => {
     <header className="bg-slate-50 border-b border-slate-300 px-8 py-4">
       <div className="flex items-center justify-between">
         <div className="font-semibold tracking-wide">Yearly calendar</div>
-        <YearPicker />
+        <div className="flex items-center gap-4">
+          <YearPicker />
+        </div>
       </div>
     </header>
   );
