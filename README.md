@@ -52,3 +52,22 @@ export default tseslint.config({
   },
 })
 ```
+
+## Testing
+
+To ensure code quality, automated tests are set up.
+
+### Running Tests
+
+You can run all tests using the following commands:
+
+- `npm run test`: Run all tests
+- `npm run build`: Runs tests and produces a production build
+
+Tests are structured to cover a wide range of scenarios, ensuring that the calendar correctly calculates vacation days, including considerations for:
+
+- Holidays
+- Weekends
+- Overlapping events
+- Half-day events
+- Comprehensive scenarios

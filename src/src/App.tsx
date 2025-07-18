@@ -10,55 +10,77 @@ import Holidays from "date-holidays";
 function App() {
   const events = useAppSelector((state) => state.events);
   const holidays = new Holidays("CZ");
-
-  const holidayDates = new Set(
-    holidays.getHolidays(new Date().getFullYear()).map((h) => h.date)
-  );
-
-  // Count working days (Mon–Fri, not public holidays)
-  const vacationDays = events.reduce((total, event) => {
-    if (isSameDay(event.from, event.to) && isWorkingDay(event.from)) {
-      return total + (event.fromType === "Full day" ? 1 : 0.5);
-    }
-
-    const days = eachDayOfInterval({
-      start: event.from,
-      end: event.to,
-    });
-
-    const workingDays = days.filter(isWorkingDay);
-
-    let count = workingDays.length;
-
-    if (isSameDay(event.from, event.to)) {
-      if (event.fromType !== "Full day" || event.toType !== "Full day") {
-        count -= 0.5;
-      }
-    } else {
-      if (
-        workingDays.some((day) => isSameDay(day, event.from)) &&
-        event.fromType !== "Full day"
-      )
-        count -= 0.5;
-
-      if (
-        workingDays.some((day) => isSameDay(day, event.to)) &&
-        event.toType !== "Full day"
-      )
-        count -= 0.5;
-    }
-
-    return total + count;
-  }, 0);
-
+  
+  const year = 2025;
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  const year = 2025;
 
   function isWorkingDay(day: Date) {
-    const iso = day.toISOString().split("T")[0];
-    return !isWeekend(day) && !holidayDates.has(iso);
+    const isHoliday = holidays.isHoliday(day);
+    const isPublicHoliday = Array.isArray(isHoliday) && 
+      isHoliday.some(h => h.type === 'public');
+    return !isWeekend(day) && !isPublicHoliday;
   }
+
+  // Count working days (Mon–Fri, not public holidays) with proper overlap handling
+  const vacationDays = (() => {
+    const dayMap = new Map();
+    
+    // Collect all days from all events
+    events.forEach(event => {
+      const days = eachDayOfInterval({
+        start: event.from,
+        end: event.to,
+      });
+
+      days.forEach(day => {
+        if (!isWorkingDay(day)) return; // Skip non-working days
+        
+        const dayKey = day.toISOString().split('T')[0];
+        
+        if (!dayMap.has(dayKey)) {
+          dayMap.set(dayKey, {
+            date: day,
+            events: []
+          });
+        }
+        
+        dayMap.get(dayKey).events.push(event);
+      });
+    });
+
+    // Calculate vacation days for each unique working day
+    let totalVacationDays = 0;
+    
+    for (const dayInfo of dayMap.values()) {
+      const { date, events: dayEvents } = dayInfo;
+      let dayVacationDays = 0;
+      
+      // Find the maximum vacation requirement for this day (overlaps don't count multiple times)
+      for (const event of dayEvents) {
+        let eventDayVacation = 1; // Default full day
+        
+        // Single day event
+        if (isSameDay(event.from, event.to)) {
+          eventDayVacation = event.fromType === "Full day" ? 1 : 0.5;
+        } else {
+          // Multi-day event - check for half-day types
+          if (isSameDay(event.from, date) && event.fromType !== "Full day") {
+            eventDayVacation = 0.5;
+          } else if (isSameDay(event.to, date) && event.toType !== "Full day") {
+            eventDayVacation = 0.5;
+          }
+        }
+        
+        // Take maximum (overlaps don't count multiple times)
+        dayVacationDays = Math.max(dayVacationDays, eventDayVacation);
+      }
+      
+      totalVacationDays += dayVacationDays;
+    }
+    
+    return totalVacationDays;
+  })();
 
   return (
     <div className="h-screen bg-slate-100 text-slate-900 flex">
