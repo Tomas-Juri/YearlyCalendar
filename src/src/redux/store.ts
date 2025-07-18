@@ -28,9 +28,6 @@ function saveToLocalStorage(state: RootState) {
 // invalid output must be undefined
 function loadFromLocalStorage(): { events: EventsState } | undefined {
   try {
-    // Run migrations before loading data
-    migrateLocalStorage();
-    
     const serialisedState = localStorage.getItem("state");
     if (serialisedState === null) return undefined;
     const parsed = JSON.parse(serialisedState, reviver);

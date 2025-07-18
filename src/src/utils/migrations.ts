@@ -2,20 +2,85 @@
 export const CURRENT_VERSION = 2;
 const VERSION_KEY = 'app_version';
 const STATE_KEY = 'state';
+const MIGRATION_FLAG_KEY = 'migration_in_progress';
+
+/**
+ * Detect actual data version based on structure, not stored version
+ */
+function detectActualVersion(): number {
+  try {
+    const currentState = localStorage.getItem(STATE_KEY);
+    if (!currentState) return CURRENT_VERSION; // No data, assume current version
+    
+    const parsed = JSON.parse(currentState);
+    
+    // Check if it's array format (v0)
+    if (Array.isArray(parsed)) {
+      return 0;
+    }
+    
+    // Check if it's v1 format (flat structure with events array)
+    if (parsed.events && Array.isArray(parsed.events) && 
+        parsed.addEventModal && parsed.editEventModal && parsed.deleteEventModal &&
+        !parsed.events.events) {
+      return 1;
+    }
+    
+    // Check if it's v2 format (Redux structure)
+    if (parsed.events && parsed.events.events && Array.isArray(parsed.events.events) &&
+        parsed.events.addEventModal && parsed.events.editEventModal && parsed.events.deleteEventModal) {
+      return 2;
+    }
+    
+    // Unknown format, assume current version
+    return CURRENT_VERSION;
+  } catch (error) {
+    console.error('Error detecting version:', error);
+    return 0; // Default to v0 to force migration
+  }
+}
 
 export function migrateLocalStorage(): void {
   try {
+    // Check if we're already in a migration cycle
+    const migrationInProgress = localStorage.getItem(MIGRATION_FLAG_KEY);
+    if (migrationInProgress) {
+      console.log('Migration already completed, cleaning up flag');
+      localStorage.removeItem(MIGRATION_FLAG_KEY);
+      return;
+    }
+    
     const currentVersion = localStorage.getItem(VERSION_KEY);
     const versionNumber = parseInt(currentVersion || '0');
     
-    if (versionNumber < CURRENT_VERSION) {
-      console.log(`Migrating from version ${versionNumber} to ${CURRENT_VERSION}`);
-      runMigrations(versionNumber);
+    console.log(`Current version: ${versionNumber}, Target version: ${CURRENT_VERSION}`);
+    
+    // Check actual data structure, not just version number
+    const actualVersion = detectActualVersion();
+    console.log(`Detected actual data version: ${actualVersion}`);
+    
+    if (actualVersion < CURRENT_VERSION) {
+      console.log(`Force migrating from detected version ${actualVersion} to ${CURRENT_VERSION}`);
+      
+      // Set flag to prevent infinite refresh loop
+      localStorage.setItem(MIGRATION_FLAG_KEY, 'true');
+      
+      runMigrations(actualVersion);
       localStorage.setItem(VERSION_KEY, CURRENT_VERSION.toString());
       console.log('Migration completed successfully');
+      
+      // Automatically refresh page after migration to load new data
+      if (typeof window !== 'undefined') {
+        console.log('Refreshing page to load migrated data...');
+        window.location.reload();
+      }
+    } else {
+      console.log('No migration needed');
     }
   } catch (error) {
     console.error('Migration failed:', error);
+    // Clean up flag on error
+    localStorage.removeItem(MIGRATION_FLAG_KEY);
     // If migration fails, clear state to prevent app crashes
     localStorage.removeItem(STATE_KEY);
     localStorage.setItem(VERSION_KEY, CURRENT_VERSION.toString());
