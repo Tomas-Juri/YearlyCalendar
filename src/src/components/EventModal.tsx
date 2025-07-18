@@ -4,25 +4,50 @@ import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { useEffect, useState } from "react";
-import {
-  closeEditEventModal,
-  confirmEditEventModal,
-  DayType,
-  openDeleteEventModal,
-} from "../redux/eventsSlice";
-import { useAppSelector, useAppDispatch } from "../redux/hooks";
+import { DayType, Event } from "../redux/eventsSlice";
 import { Nullable } from "primereact/ts-helpers";
 import { Dropdown } from "primereact/dropdown";
+import { useVacationValidation } from "../hooks/useVacationValidation";
 
-export const EditEventModal = () => {
-  const modal = useAppSelector((state) => state.editEventModal);
-  const dispatch = useAppDispatch();
+type EventModalProps = 
+  | { 
+      mode: 'add'; 
+      visible: boolean;
+      onClose: () => void;
+      onConfirm: (data: EventFormData) => void;
+      prefillDate?: Date;
+      existingEvent?: never;
+    }
+  | { 
+      mode: 'edit'; 
+      visible: boolean;
+      onClose: () => void;
+      onConfirm: (data: EventFormData) => void;
+      onDelete: () => void;
+      existingEvent: Event;
+      prefillDate?: never;
+    };
+
+export interface EventFormData {
+  title: string;
+  description: string;
+  from: Date;
+  to: Date;
+  fromType: DayType;
+  toType: DayType;
+}
+
+export const EventModal = (props: EventModalProps) => {
+  const { mode, visible, onClose, onConfirm } = props;
+  const { validateNewEvent, validateEditEvent, remainingDays } = useVacationValidation();
+  
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [from, setFrom] = useState<Nullable<Date>>(null);
   const [fromType, setFromType] = useState<DayType>("Full day");
   const [to, setTo] = useState<Nullable<Date>>(null);
   const [toType, setToType] = useState<DayType>("Full day");
+  
   const items = [
     { name: "Full day", value: "Full day" },
     { name: "1st Half", value: "1st Half" },
@@ -30,48 +55,66 @@ export const EditEventModal = () => {
   ];
 
   useEffect(() => {
-    setTitle(modal.opened ? modal.event.title : "");
-    setDescription(modal.opened ? modal.event.description : "");
-    setFrom(modal.opened ? modal.event.from : null);
-    setFromType(modal.opened ? modal.event.fromType : "Full day");
-    setTo(modal.opened ? modal.event.to : null);
-    setToType(modal.opened ? modal.event.toType : "Full day");
-  }, [modal]);
+    if (mode === 'add') {
+      setTitle("");
+      setDescription("");
+      setFrom(props.prefillDate ?? null);
+      setFromType("Full day");
+      setTo(null);
+      setToType("Full day");
+    } else {
+      setTitle(props.existingEvent.title);
+      setDescription(props.existingEvent.description);
+      setFrom(props.existingEvent.from);
+      setFromType(props.existingEvent.fromType);
+      setTo(props.existingEvent.to);
+      setToType(props.existingEvent.toType);
+    }
+  }, [mode, visible, props]);
+
+  useEffect(() => {
+    if (from && to === null) {
+      setTo(from);
+    }
+  }, [from, to]);
+
+  // Validation logic
+  const validationResult = from && to ? (
+    mode === 'add' 
+      ? validateNewEvent(from, to, fromType, toType)
+      : validateEditEvent(props.existingEvent, from, to, fromType, toType)
+  ) : null;
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (from && to) {
+      onConfirm({
+        title,
+        description,
+        from,
+        fromType,
+        to,
+        toType,
+      });
+    }
+  };
+
+  const headerText = mode === 'add' ? 'Add new Event' : 'Edit Event';
 
   return (
     <Dialog
-      header="Edit Event"
-      visible={modal.opened}
+      header={headerText}
+      visible={visible}
       draggable={false}
       resizable={false}
       closeOnEscape
       dismissableMask
-      className="w-[32rem]"
-      onHide={() => {
-        dispatch(closeEditEventModal());
-      }}
+      className={mode === 'add' ? 'w-[28rem]' : 'w-[32rem]'}
+      onHide={onClose}
       headerClassName="bg-slate-50"
       contentClassName="bg-slate-50"
     >
-      <form
-        action=""
-        className="space-y-4"
-        onSubmit={(e) => {
-          e.preventDefault();
-
-          if (from && to)
-            dispatch(
-              confirmEditEventModal({
-                title,
-                description,
-                from,
-                fromType,
-                to,
-                toType,
-              })
-            );
-        }}
-      >
+      <form action="" className="space-y-4" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-1">
           <label htmlFor="title" className="text-sm">
             Title <span className="text-red-600" title="Required">*</span>
@@ -84,6 +127,13 @@ export const EditEventModal = () => {
             required
           />
         </div>
+        
+        {validationResult && validationResult.newVacationDays > 0 && (
+          <div className="px-3 py-2 rounded text-sm text-center bg-blue-50 text-blue-700 border border-blue-200">
+            📅 Uses {validationResult.newVacationDays} days / {remainingDays} left total
+          </div>
+        )}
+        
         <div className="flex gap-4">
           <div className="flex flex-col gap-1">
             <label htmlFor="dates" className="text-sm">
@@ -125,6 +175,7 @@ export const EditEventModal = () => {
             )}
           </div>
         </div>
+        
         <div className="flex flex-col gap-1">
           <label htmlFor="description" className="text-sm">
             Description
@@ -137,29 +188,33 @@ export const EditEventModal = () => {
             rows={8}
           />
         </div>
-        <div className="flex justify-between gap-3 pt-4">
-          <Button
-            type="button"
-            label="Delete"
-            icon="pi pi-trash"
-            severity="secondary"
-            text
-            className="!text-red-600 hover:!bg-red-50"
-            onClick={() => {
-              if (modal.opened && modal.event) {
-                dispatch(openDeleteEventModal(modal.event));
-              }
-            }}
-          />
+        
+        <div className={`flex gap-3 pt-4 ${mode === 'edit' ? 'justify-between' : 'justify-end'}`}>
+          {mode === 'edit' && (
+            <Button
+              type="button"
+              label="Delete"
+              icon="pi pi-trash"
+              severity="secondary"
+              text
+              className="!text-red-600 hover:!bg-red-50"
+              onClick={props.onDelete}
+            />
+          )}
           <div className="flex gap-3">
             <Button
-              type="submit"
+              type="button"
               severity="secondary"
               label="Cancel"
               text
-              onClick={() => dispatch(closeEditEventModal())}
+              onClick={onClose}
             />
-            <Button type="submit" label="Confirm" icon="pi pi-check" disabled={!title.trim() || !from || !to} />
+            <Button
+              type="submit"
+              label="Confirm"
+              icon="pi pi-check"
+              disabled={!title.trim() || !from || !to}
+            />
           </div>
         </div>
       </form>

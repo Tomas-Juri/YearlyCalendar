@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { eventsSlice } from "./eventsSlice";
+import { eventsSlice, EventsState } from "./eventsSlice";
 
 const isIsoDate = (value: string) =>
   typeof value === "string" &&
@@ -25,11 +25,27 @@ function saveToLocalStorage(state: RootState) {
 
 // load string from localStarage and convert into an Object
 // invalid output must be undefined
-function loadFromLocalStorage() {
+function loadFromLocalStorage(): { events: EventsState } | undefined {
   try {
     const serialisedState = localStorage.getItem("state");
     if (serialisedState === null) return undefined;
-    return JSON.parse(serialisedState, reviver);
+    const parsed = JSON.parse(serialisedState, reviver);
+    
+    // If old format (direct events array), convert to new format
+    if (Array.isArray(parsed)) {
+      return {
+        events: {
+          events: parsed,
+          selectedYear: new Date().getFullYear(),
+          vacationAllowance: { [new Date().getFullYear()]: 27 },
+          addEventModal: { opened: false },
+          editEventModal: { opened: false },
+          deleteEventModal: { opened: false }
+        }
+      };
+    }
+    
+    return parsed;
   } catch (exception) {
     console.warn("Unable to get state from local storage", exception);
     return undefined;
@@ -37,7 +53,9 @@ function loadFromLocalStorage() {
 }
 
 export const store = configureStore({
-  reducer: eventsSlice.reducer,
+  reducer: {
+    events: eventsSlice.reducer,
+  },
   preloadedState: loadFromLocalStorage(),
 });
 
