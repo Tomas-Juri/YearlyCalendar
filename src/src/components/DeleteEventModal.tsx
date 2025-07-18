@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { closeDeleteEventModal, confirmDeleteEvent } from "../redux/eventsSlice";
 
 export const DeleteEventModal = () => {
-  const modal = useAppSelector((state) => state.deleteEventModal) || { opened: false, event: null };
+  const modal = useAppSelector((state) => state.events.deleteEventModal) || { opened: false, event: null };
   const dispatch = useAppDispatch();
 
   return (

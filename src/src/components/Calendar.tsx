@@ -1,15 +1,14 @@
 import Holidays from "date-holidays";
 import { DayCell } from "./DayCell/DayCell";
-import { useAppSelector } from "../redux/hooks";
 import { Event } from "../redux/eventsSlice";
 
 type Props = {
   year: number;
   today: Date;
+  events: Event[];
 };
 
-export const Calendar = ({ year, today }: Props) => {
-  const events = useAppSelector((state) => state.events);
+export const Calendar = ({ year, today, events }: Props) => {
   const holidays = new Holidays("CZ");
 
   const months = Array.from({ length: 12 }, (_, i) => i + 1); // [1, 2, ..., 12]

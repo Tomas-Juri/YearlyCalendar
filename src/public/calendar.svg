@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <defs>
+    <linearGradient id="calendarGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4F46E5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Calendar body -->
+  <rect x="4" y="8" width="24" height="20" rx="2" fill="url(#calendarGradient)" stroke="#1F2937" stroke-width="0.5"/>
+  
+  <!-- Calendar header -->
+  <rect x="4" y="6" width="24" height="4" rx="2" fill="#374151"/>
+  
+  <!-- Calendar rings -->
+  <circle cx="10" cy="4" r="1.5" fill="#6B7280"/>
+  <circle cx="22" cy="4" r="1.5" fill="#6B7280"/>
+  <rect x="9" y="2" width="2" height="6" fill="#6B7280"/>
+  <rect x="21" y="2" width="2" height="6" fill="#6B7280"/>
+  
+  <!-- Calendar grid lines -->
+  <line x1="4" y1="12" x2="28" y2="12" stroke="#E5E7EB" stroke-width="0.5"/>
+  <line x1="4" y1="16" x2="28" y2="16" stroke="#E5E7EB" stroke-width="0.5"/>
+  <line x1="4" y1="20" x2="28" y2="20" stroke="#E5E7EB" stroke-width="0.5"/>
+  <line x1="4" y1="24" x2="28" y2="24" stroke="#E5E7EB" stroke-width="0.5"/>
+  
+  <line x1="10" y1="8" x2="10" y2="28" stroke="#E5E7EB" stroke-width="0.5"/>
+  <line x1="16" y1="8" x2="16" y2="28" stroke="#E5E7EB" stroke-width="0.5"/>
+  <line x1="22" y1="8" x2="22" y2="28" stroke="#E5E7EB" stroke-width="0.5"/>
+  
+  <!-- Some calendar dates -->
+  <circle cx="7" cy="14" r="1.5" fill="#FFF"/>
+  <circle cx="19" cy="18" r="1.5" fill="#F59E0B"/>
+  <circle cx="25" cy="22" r="1.5" fill="#EF4444"/>
+</svg>

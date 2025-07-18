@@ -5,7 +5,7 @@ import { ConfirmPopup } from "primereact/confirmpopup";
 import { EventCard } from "./EventCard";
 
 export const EventBar = () => {
-  const events = useAppSelector((state) => state.events);
+  const events = useAppSelector((state) => state.events.events);
   const sortedEvents = [...events].sort(
     (a, b) => new Date(a.from).getTime() - new Date(b.from).getTime()
   );
