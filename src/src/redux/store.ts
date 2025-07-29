@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { eventsSlice, EventsState } from "./eventsSlice";
-import { migrateLocalStorage, cleanupOldBackups } from "../utils/migrations";
+import { cleanupOldBackups } from "../utils/migrations";
 
 const isIsoDate = (value: string) =>
   typeof value === "string" &&
@@ -31,7 +31,7 @@ function loadFromLocalStorage(): { events: EventsState } | undefined {
     const serialisedState = localStorage.getItem("state");
     if (serialisedState === null) return undefined;
     const parsed = JSON.parse(serialisedState, reviver);
-    
+
     return parsed;
   } catch (exception) {
     console.warn("Unable to get state from local storage", exception);
@@ -57,7 +57,7 @@ setTimeout(() => {
   try {
     cleanupOldBackups();
   } catch (error) {
-    console.warn('Failed to cleanup old backups:', error);
+    console.warn("Failed to cleanup old backups:", error);
   }
 }, 1000); // Run after 1 second to not block app startup
 
