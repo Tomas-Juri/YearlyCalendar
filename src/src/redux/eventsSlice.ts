@@ -3,6 +3,8 @@ import { guid } from "../utilities";
 
 export type EventsState = {
   events: Event[];
+  selectedYear: number;
+  vacationAllowance: Record<number, number>; // year -> days mapping
   addEventModal: {
     opened: boolean;
     prefillDate?: Date;
@@ -23,6 +25,10 @@ export type EventsState = {
 
 const initialState: EventsState = {
   events: [],
+  selectedYear: new Date().getFullYear(),
+  vacationAllowance: {
+    [new Date().getFullYear()]: 27, // Default 27 days for current year
+  },
   addEventModal: {
     opened: false,
     prefillDate: undefined,
@@ -101,6 +107,16 @@ export const eventsSlice = createSlice({
       state.deleteEventModal = { opened: false };
       state.editEventModal = { opened: false };
     },
+    setSelectedYear: (state, action: PayloadAction<number>) => {
+      state.selectedYear = action.payload;
+      // Initialize vacation allowance for new year if not exists
+      if (!state.vacationAllowance[action.payload]) {
+        state.vacationAllowance[action.payload] = 27; // Default 27 days
+      }
+    },
+    setVacationAllowance: (state, action: PayloadAction<{ year: number; days: number }>) => {
+      state.vacationAllowance[action.payload.year] = action.payload.days;
+    },
   },
 });
 
@@ -115,4 +131,6 @@ export const {
   openDeleteEventModal,
   closeDeleteEventModal,
   confirmDeleteEvent,
+  setSelectedYear,
+  setVacationAllowance,
 } = eventsSlice.actions;

@@ -25,6 +25,10 @@ const tests = [
     file: 'app-logic-test.js'
   },
   {
+    name: 'Component tests',
+    file: 'component-tests.js'
+  },
+  {
     name: 'Comprehensive suite',
     file: 'comprehensive-test-suite.js'
   }
