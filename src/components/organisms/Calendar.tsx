@@ -1,16 +1,21 @@
 import Holidays from "date-holidays";
-import { useVacationValidation } from "../hooks/useVacationValidation";
-import { Event } from "../redux/eventsSlice";
-import { DayCell } from "./DayCell/DayCell";
+import { useVacationValidation } from "../../hooks/useVacationValidation";
+import { Event } from "../../redux/eventsSlice";
+import { useAppSelector } from "../../redux/hooks";
+import { DayCell } from "../atoms";
 
-type Props = {
-  year: number;
-  today: Date;
-  events: Event[];
-};
-
-export const Calendar = ({ year, today, events }: Props) => {
+export const Calendar = () => {
   const { currentVacationDays: vacationDays } = useVacationValidation();
+  const eventsState = useAppSelector((state) => state.events);
+  const year = eventsState.selectedYear;
+
+  const events = eventsState.events.filter(
+    (event: Event) => event.from.getFullYear() === year || event.to.getFullYear() === year,
+  );
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
   const holidays = new Holidays("CZ");
 
   const months = Array.from({ length: 12 }, (_, i) => i + 1); // [1, 2, ..., 12]
@@ -87,11 +92,11 @@ export const Calendar = ({ year, today, events }: Props) => {
   }
 
   return (
-    <div className="flex flex-grow flex-col items-center justify-center overflow-x-auto px-6">
+    <main className="flex flex-grow flex-col items-center justify-center overflow-x-auto px-6">
       <div>
         <div className="mb-1 flex w-fit gap-1">
           <div>
-            <div className="rounded-xs pointer-events-none flex h-8 w-14 items-center justify-center border-2 font-medium opacity-0 2xl:h-9 2xl:w-16" />
+            <div className="pointer-events-none flex h-8 w-14 items-center justify-center rounded-xs border-2 font-medium opacity-0 2xl:h-9 2xl:w-16" />
           </div>
           {headerDays.map((day, i) => (
             <div key={i}>
@@ -138,7 +143,7 @@ export const Calendar = ({ year, today, events }: Props) => {
             <div className="flex flex-row items-center gap-3 text-gray-300">
               {/* Full day */}
               <span className="flex items-center gap-1">
-                <span className="rounded-xs inline-block h-4 w-4 border border-sky-500 bg-sky-700 align-middle"></span>
+                <span className="inline-block h-4 w-4 rounded-xs border border-sky-500 bg-sky-700 align-middle"></span>
                 Full day
               </span>
               {/* 1st Half */}
@@ -146,7 +151,7 @@ export const Calendar = ({ year, today, events }: Props) => {
                 <svg
                   width="16"
                   height="16"
-                  className="inline-block border-l border-t border-sky-500 align-middle text-sky-700"
+                  className="inline-block border-t border-l border-sky-500 align-middle text-sky-700"
                 >
                   <polygon points="0,0 16,0 0,16" fill="currentColor" />
                 </svg>
@@ -157,7 +162,7 @@ export const Calendar = ({ year, today, events }: Props) => {
                 <svg
                   width="16"
                   height="16"
-                  className="inline-block border-b border-r border-sky-500 align-middle text-sky-700"
+                  className="inline-block border-r border-b border-sky-500 align-middle text-sky-700"
                 >
                   <polygon points="16,16 16,0 0,16" fill="currentColor" />
                 </svg>
@@ -167,6 +172,6 @@ export const Calendar = ({ year, today, events }: Props) => {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 };

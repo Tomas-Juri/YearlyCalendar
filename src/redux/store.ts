@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { cleanupOldBackups } from "../utils/migrations";
+import { cleanupOldBackups } from "../utilities/migrations";
 import { eventsSlice, EventsState } from "./eventsSlice";
 
 const isIsoDate = (value: string) =>

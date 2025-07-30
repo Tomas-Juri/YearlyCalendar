@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { useEffect, useRef, useState } from "react";
-import { setSelectedYear } from "../redux/eventsSlice";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { setSelectedYear } from "../../redux/eventsSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 
 export const YearPicker = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -78,7 +78,7 @@ export const YearPicker = () => {
       </button>
 
       {isOpen && (
-        <div className="rounded-xs absolute right-0 top-full z-50 mt-1 max-h-60 w-fit overflow-y-auto border border-gray-700 bg-gray-800 shadow-lg">
+        <div className="absolute top-full right-0 z-50 mt-1 max-h-60 w-fit overflow-y-auto rounded-xs border border-gray-700 bg-gray-800 shadow-lg">
           <div className="grid grid-cols-3 gap-1 pr-4 text-sm" role="listbox">
             {years.map((year) => (
               <button

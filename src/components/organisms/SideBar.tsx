@@ -39,7 +39,7 @@ export const SideBar = () => {
     <>
       <aside className="border-r border-gray-800">
         <button
-          className="flex size-16 cursor-pointer items-center justify-center border-b border-transparent text-gray-300 transition duration-300 hover:border-gray-800 hover:bg-sky-800 hover:text-gray-100"
+          className="flex size-16 cursor-pointer items-center justify-center border-b border-transparent text-gray-200 transition duration-300 hover:border-gray-800 hover:bg-sky-800 hover:text-white"
           onClick={() => toggleDrawer()}
           title="Open events list"
         >
@@ -76,6 +76,7 @@ export const SideBar = () => {
                   className="group w-full cursor-pointer snap-start px-6 py-4 text-left transition duration-300 hover:z-10 hover:bg-gray-800"
                   onClick={() => dispatch(openEditEventModal(event))}
                   data-id={event.id}
+                  key={event.id}
                 >
                   <div className="flex-grow">
                     <h2 className="mb-1 font-medium text-slate-300 transition duration-300 group-hover:text-slate-100">

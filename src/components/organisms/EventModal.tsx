@@ -1,14 +1,13 @@
 import { CheckIcon } from "@heroicons/react/24/solid";
 import { Calendar } from "primereact/calendar";
 import { Dialog } from "primereact/dialog";
-import { Dropdown } from "primereact/dropdown";
-import { InputText } from "primereact/inputtext";
-import { InputTextarea } from "primereact/inputtextarea";
 import { Nullable } from "primereact/ts-helpers";
 import { useEffect, useState } from "react";
-import { DayType, Event } from "../redux/eventsSlice";
-import { Button } from "./atoms";
-import { ConfirmationButton } from "./molecules";
+import { Event } from "../../redux/eventsSlice";
+import { DayType, DayTypes } from "../../types";
+import { Button } from "../atoms";
+import { Select } from "../atoms/Select";
+import { ConfirmationButton, Field } from "../molecules";
 
 type EventModalProps =
   | {
@@ -47,12 +46,6 @@ export const EventModal = (props: EventModalProps) => {
   const [fromType, setFromType] = useState<DayType>("Full day");
   const [to, setTo] = useState<Nullable<Date>>(null);
   const [toType, setToType] = useState<DayType>("Full day");
-
-  const items = [
-    { name: "Full day", value: "Full day" },
-    { name: "1st Half", value: "1st Half" },
-    { name: "2nd Half", value: "2nd Half" },
-  ];
 
   useEffect(() => {
     if (mode === "add") {
@@ -108,22 +101,11 @@ export const EventModal = (props: EventModalProps) => {
       contentClassName="bg-gray-900"
     >
       <form action="" className="space-y-4" onSubmit={handleSubmit}>
-        <div className="flex flex-col gap-1">
-          <label htmlFor="title" className="text-sm text-gray-300">
-            Title{" "}
-            <span className="text-red-600" title="Required">
-              *
-            </span>
-          </label>
-          <InputText
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            id="title"
-            className="p-inputtext-sm bg-white"
-            required
-          />
-        </div>
-
+        <Field
+          id="title"
+          label="Title"
+          input={{ placeholder: "A wonderful event", type: "text", value: title, onChange: setTitle }}
+        />
         <div className="flex gap-4">
           <div className="flex flex-col gap-1">
             <label htmlFor="dates" className="text-sm text-gray-300">
@@ -133,12 +115,15 @@ export const EventModal = (props: EventModalProps) => {
               </span>
             </label>
             <Calendar value={from} onChange={(e) => setFrom(e.value)} className="p-inputtext-sm bg-white" required />
-            <Dropdown
+            <Select<DayType>
+              id="fromType"
               value={fromType}
-              onChange={(e) => setFromType(e.value)}
-              options={items}
-              optionLabel="name"
-              className="p-inputtext-sm bg-white"
+              onChange={setFromType}
+              items={DayTypes.map((type) => ({
+                id: type.toLocaleLowerCase().replace(" ", "-"),
+                label: type.toString(),
+                value: type,
+              }))}
             />
           </div>
 
@@ -151,31 +136,32 @@ export const EventModal = (props: EventModalProps) => {
             </label>
             <Calendar value={to} onChange={(e) => setTo(e.value)} className="p-inputtext-sm" required />
             {from && to && from.toDateString() !== to.toDateString() && (
-              <Dropdown
+              <Select<DayType>
+                id="toType"
                 value={toType}
-                onChange={(e) => setToType(e.value)}
-                options={items}
-                optionLabel="name"
-                className="p-inputtext-sm"
+                onChange={setToType}
+                items={DayTypes.map((type) => ({
+                  id: type.toLocaleLowerCase().replace(" ", "-"),
+                  label: type.toString(),
+                  value: type,
+                }))}
               />
             )}
           </div>
         </div>
 
-        <div className="flex flex-col gap-1">
-          <label htmlFor="description" className="text-sm text-gray-300">
-            Description
-          </label>
-          <InputTextarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            id="description"
-            className="p-inputtext-sm bg-white"
-            rows={8}
-          />
-        </div>
+        <Field
+          id="description"
+          label="Description"
+          input={{
+            placeholder: "A detailed description of the event",
+            type: "textarea",
+            value: description,
+            onChange: setDescription,
+          }}
+        />
 
-        <div className={`flex gap-3 pt-4 ${mode === "edit" ? "justify-between" : "justify-end"}`}>
+        <div className="flex gap-3 pt-4">
           {props.mode === "edit" && (
             <ConfirmationButton
               text="Delete"
@@ -183,7 +169,7 @@ export const EventModal = (props: EventModalProps) => {
               message="Are you sure you want to delete this event?"
             />
           )}
-          <div className="flex gap-3">
+          <div className="ml-auto flex gap-3">
             <Button variant="gray" size="regular" text="Cancel" onClick={onClose} />
             <Button
               type="submit"

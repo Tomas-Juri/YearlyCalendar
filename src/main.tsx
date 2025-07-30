@@ -1,8 +1,8 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import App from "./App.tsx";
 import { Provider } from "react-redux";
-import { migrateLocalStorage } from "./utils/migrations";
+import App from "./App.tsx";
+import { migrateLocalStorage } from "./utilities/migrations.ts";
 
 // Run migrations before importing store
 try {
@@ -11,10 +11,10 @@ try {
   console.error("Migration failed, using fresh state:", error);
 }
 
-import { store } from "./redux/store.ts";
-import { locale, PrimeReactProvider, updateLocaleOption } from "primereact/api";
-import "./styles/index.css";
 import "primeicons/primeicons.css";
+import { locale, PrimeReactProvider, updateLocaleOption } from "primereact/api";
+import { store } from "./redux/store.ts";
+import "./styles/index.css";
 
 updateLocaleOption("firstDayOfWeek", 1, "en");
 locale("en");

@@ -1,6 +1,4 @@
-import { EventModal } from "./components/EventModal";
-import { MainContent } from "./components/MainContent";
-import { AppHeader, SideBar } from "./components/organisms";
+import { AppHeader, Calendar, EventModal, SideBar } from "./components/organisms";
 import {
   closeAddEventModal,
   closeEditEventModal,
@@ -9,7 +7,6 @@ import {
   confirmEditEventModal,
 } from "./redux/eventsSlice";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
-import "./utils/migrationDebug"; // Import debug tools in development
 
 function App() {
   const dispatch = useAppDispatch();
@@ -21,7 +18,7 @@ function App() {
       <AppHeader />
       <div className="flex flex-1">
         <SideBar />
-        <MainContent />
+        <Calendar />
       </div>
 
       <EventModal

@@ -1,7 +1,8 @@
 import classNames from "classnames";
 import { useEffect, useRef, useState } from "react";
-import { DayType, Event, openAddEventModal, openEditEventModal } from "../../redux/eventsSlice";
+import { Event, openAddEventModal, openEditEventModal } from "../../redux/eventsSlice";
 import { useAppDispatch } from "../../redux/hooks";
+import { DayType } from "../../types";
 import "./DayCell.css";
 
 type Props = {
@@ -105,11 +106,11 @@ export const DayCell = (props: Props) => {
       {hasEvent && open && (
         <div
           ref={boxRef}
-          className="absolute left-1/2 top-full z-50 mt-2 min-w-[14rem] -translate-x-1/2 cursor-pointer space-y-1 rounded-sm border-2 border-gray-700 bg-gray-800 text-sm text-gray-200 shadow"
+          className="absolute top-full left-1/2 z-50 mt-2 min-w-[14rem] -translate-x-1/2 cursor-pointer space-y-1 rounded-sm border-2 border-gray-700 bg-gray-800 text-sm text-gray-200 shadow"
           style={{ pointerEvents: "auto" }}
         >
           <button
-            className="absolute right-1 top-1 px-1 py-0.5 text-lg text-gray-300 hover:text-gray-100"
+            className="absolute top-1 right-1 px-1 py-0.5 text-lg text-gray-300 hover:text-gray-100"
             onClick={(e) => {
               e.stopPropagation();
               setOpen(false);
@@ -145,11 +146,11 @@ export const DayCell = (props: Props) => {
       {!hasEvent && plusOpen && (
         <div
           ref={plusRef}
-          className="absolute left-1/2 top-full z-50 mt-2 flex min-w-[10rem] -translate-x-1/2 flex-col rounded border border-gray-700 bg-gray-800 px-4 py-2 text-sm text-slate-700 shadow"
+          className="absolute top-full left-1/2 z-50 mt-2 flex min-w-[10rem] -translate-x-1/2 flex-col rounded border border-gray-700 bg-gray-800 px-4 py-2 text-sm text-slate-700 shadow"
           style={{ pointerEvents: "auto" }}
         >
           <button
-            className="absolute right-1 top-1 px-1 py-0.5 text-lg text-gray-300 hover:text-gray-100"
+            className="absolute top-1 right-1 px-1 py-0.5 text-lg text-gray-300 hover:text-gray-100"
             onClick={(e) => {
               e.stopPropagation();
               setPlusOpen(false);
@@ -160,7 +161,7 @@ export const DayCell = (props: Props) => {
             ×
           </button>
           <button
-            className="flex w-full cursor-pointer items-center justify-start gap-3 rounded py-1 pl-0 pr-1 font-medium text-gray-200 transition duration-300 hover:text-gray-50"
+            className="flex w-full cursor-pointer items-center justify-start gap-3 rounded py-1 pr-1 pl-0 font-medium text-gray-200 transition duration-300 hover:text-gray-50"
             onClick={(e) => {
               e.stopPropagation();
               setPlusOpen(false);

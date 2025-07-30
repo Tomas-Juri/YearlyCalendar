@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { DayType } from "../types";
 import { guid } from "../utilities";
 
 export type EventsState = {
@@ -37,8 +38,6 @@ export type Event = {
   to: Date;
   toType: DayType;
 };
-
-export type DayType = "Full day" | "1st Half" | "2nd Half";
 
 export type NewEvent = Omit<Event, "id">;
 export type EditEvent = Omit<Event, "id">;
