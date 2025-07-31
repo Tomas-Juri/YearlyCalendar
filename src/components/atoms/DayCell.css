@@ -53,11 +53,27 @@
 }
 
 .day-cell.has-event.is-past-day {
-  @apply border-sky-900 bg-sky-800 text-sky-300;
+  @apply text-sky-400;
 }
 
-.day-cell.has-event.is-past-day.day-cell.is-weekend {
-  @apply border-sky-900 bg-sky-800 text-sky-300;
+.day-cell.has-event.is-past-day.is-full-day {
+  @apply border-sky-900 bg-sky-800 text-sky-400;
+}
+
+.day-cell.has-event.is-past-day.is-first-half {
+  @apply border-t-sky-900 border-l-sky-900;
+}
+
+.day-cell.has-event.is-past-day.is-first-half .day-cell-first-half {
+  @apply border-t-sky-800 border-l-sky-800;
+}
+
+.day-cell.has-event.is-past-day.is-second-half {
+  @apply border-r-sky-900 border-b-sky-900;
+}
+
+.day-cell.has-event.is-second-half.is-past-day.is-first-half {
+  @apply border-r-sky-800 border-b-sky-800;
 }
 
 .day-cell .day-cell-second-half {

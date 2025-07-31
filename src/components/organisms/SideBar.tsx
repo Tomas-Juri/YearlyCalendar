@@ -13,7 +13,7 @@ export const SideBar = () => {
   const events = useAppSelector((state) => state.events.events);
   const sortedEvents = [...events].sort((a, b) => new Date(a.from).getTime() - new Date(b.from).getTime());
 
-  const toggleDrawer = () => {
+  const openDrawer = () => {
     dispatch(openSidebar());
   };
 
@@ -47,7 +47,9 @@ export const SideBar = () => {
             "hover:from-sky-600 hover:to-sky-700 hover:text-sky-50",
             isOpen ? "from-sky-700 to-sky-800 text-sky-100" : "from-transparent to-transparent",
           )}
-          onClick={() => toggleDrawer()}
+          onClick={() => {
+            isOpen ? closeDrawer() : openDrawer();
+          }}
           title="Open events list"
         >
           <ClipboardDocumentListIcon className="size-6" />

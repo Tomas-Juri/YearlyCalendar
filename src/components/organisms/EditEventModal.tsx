@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import { closeEditEventModal, confirmEditEventModal } from "../../redux/eventsSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { DayType, DayTypes } from "../../types";
+import { compareDates } from "../../utilities/date";
 import { Button, DatePicker } from "../atoms";
 import { Select } from "../atoms/Select";
 import { ConfirmationButton, Field } from "../molecules";
-import { compareDates } from "../../utilities/date";
 
 export interface EventFormData {
   title: string;
@@ -82,7 +82,7 @@ export const EditEventModal = () => {
     <Dialog open={opened} onClose={onClose} className="">
       <DialogBackdrop className="fixed inset-0 z-5000 bg-black/60" />
       <div className="fixed inset-0 z-5001 flex w-screen items-center justify-center">
-        <DialogPanel className="max-w-lg space-y-6 rounded-sm border-2 border-white/5 bg-gray-950 px-8 pt-8 pb-6">
+        <DialogPanel className="max-w-lg min-w-[32rem] space-y-6 rounded-sm border-2 border-white/5 bg-gray-950 px-8 pt-8 pb-6">
           <DialogTitle className="text-xl font-semibold text-gray-100">Edit event</DialogTitle>
           <form action="" className="space-y-4" onSubmit={handleSubmit}>
             <Field
@@ -91,7 +91,7 @@ export const EditEventModal = () => {
               input={{ placeholder: "A wonderful event", type: "text", value: title, onChange: setTitle }}
             />
             <div className="flex gap-4">
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-1 flex-col gap-1">
                 <label htmlFor="dates" className="text-sm text-gray-300">
                   From{" "}
                   <span className="text-red-600" title="Required">
@@ -111,7 +111,7 @@ export const EditEventModal = () => {
                 />
               </div>
 
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-1 flex-col gap-1">
                 <label htmlFor="dates" className="text-sm text-gray-300">
                   To{" "}
                   <span className="text-red-600" title="Required">
