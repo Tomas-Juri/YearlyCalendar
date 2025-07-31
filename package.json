@@ -22,8 +22,6 @@
     "classnames": "^2.5.1",
     "date-fns": "^4.1.0",
     "date-holidays": "^3.24.2",
-    "primeicons": "^7.0.0",
-    "primereact": "^10.9.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-redux": "^9.2.0",

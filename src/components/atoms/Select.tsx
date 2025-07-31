@@ -37,7 +37,7 @@ export function Select<T>(props: Props<T>) {
           <ListboxOptions
             anchor="bottom"
             className={
-              "z-5000 w-(--button-width) divide-y divide-white/5 overflow-y-auto rounded-sm border-2 border-gray-700 bg-gray-800 shadow-lg shadow-black/20 [--anchor-gap:--spacing(1)] focus:outline-none"
+              "z-5002 w-(--button-width) divide-y divide-white/5 overflow-y-auto rounded-sm border-2 border-gray-700 bg-gray-800 shadow-lg shadow-black/20 [--anchor-gap:--spacing(1)] focus:outline-none"
             }
           >
             {props.items.map((item) => (

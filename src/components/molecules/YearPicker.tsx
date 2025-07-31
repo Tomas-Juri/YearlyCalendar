@@ -59,7 +59,7 @@ export const YearPicker = () => {
     <div className="relative h-full" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="duraion-300 group flex h-full items-center justify-center gap-2 border-l border-gray-900 px-5 py-4 text-gray-200 transition-colors hover:bg-sky-800 focus:outline-none"
+        className="duraion-300 group flex h-full cursor-pointer items-center justify-center gap-2 border-l border-gray-900 px-5 py-4 text-gray-200 transition-colors hover:bg-sky-800 focus:outline-none"
         aria-haspopup="listbox"
         aria-expanded={isOpen}
         aria-label="Select year"

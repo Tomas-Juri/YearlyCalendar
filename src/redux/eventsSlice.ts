@@ -14,7 +14,7 @@ export type EventsState = {
         opened: true;
         event: Event;
       }
-    | { opened: false };
+    | { opened: false; event?: never };
 };
 
 const initialState: EventsState = {

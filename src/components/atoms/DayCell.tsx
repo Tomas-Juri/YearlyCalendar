@@ -60,7 +60,10 @@ export const DayCell = (props: Props) => {
   const dayTypes = props.events.map((event) => getDayTypeForEvent(event, date));
   const isSecondHalf = dayTypes.length > 0 && dayTypes.every((type) => type === "2nd Half");
   const isFirstHalf = dayTypes.length > 0 && dayTypes.every((type) => type === "1st Half");
-  const isFullDay = dayTypes.length > 0 && dayTypes.every((type) => type === "Full day");
+  const isFullDay =
+    dayTypes.length > 0 &&
+    (dayTypes.some((type) => type === "Full day") ||
+      (dayTypes.some((type) => type === "2nd Half") && dayTypes.some((type) => type === "1st Half")));
 
   return (
     <div className="relative select-none">

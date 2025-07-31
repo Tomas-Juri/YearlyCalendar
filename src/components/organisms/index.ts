@@ -1,4 +1,5 @@
+export { AddEventModal } from "./AddEventModal";
 export { AppHeader } from "./AppHeader";
 export { Calendar } from "./Calendar";
-export { EventModal } from "./EventModal";
+export { EditEventModal } from "./EditEventModal";
 export { SideBar } from "./SideBar";
