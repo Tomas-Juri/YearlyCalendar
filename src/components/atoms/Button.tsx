@@ -38,7 +38,7 @@ export const Button = ({
         onClick?.();
       }}
       className={classNames(
-        "focus:outline-noned flex cursor-pointer items-center gap-2.5 rounded-sm font-medium transition duration-300 focus:ring-2 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60",
+        "flex cursor-pointer items-center gap-2.5 rounded-sm font-medium transition duration-300 focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-60",
         fullWidth && "w-full justify-center text-center",
         variant === "primary" && "bg-sky-700 text-white hover:bg-sky-800 focus:ring-sky-600",
         variant === "danger" && "bg-red-600 text-red-50 hover:bg-red-700 hover:text-red-100",

@@ -53,7 +53,11 @@
 }
 
 .day-cell.has-event.is-past-day {
-  @apply border-sky-800 bg-sky-700 text-sky-200;
+  @apply border-sky-900 bg-sky-800 text-sky-300;
+}
+
+.day-cell.has-event.is-past-day.day-cell.is-weekend {
+  @apply border-sky-900 bg-sky-800 text-sky-300;
 }
 
 .day-cell .day-cell-second-half {

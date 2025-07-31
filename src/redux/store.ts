@@ -2,10 +2,12 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import { eventsSlice } from "./eventsSlice";
 import { loadFromLocalStorage, saveToLocalStorage } from "./localStorage/localStorageStore";
+import { sidebarSlice } from "./sidebarSlice";
 
 export const store = configureStore({
   reducer: {
     events: eventsSlice.reducer,
+    sidebar: sidebarSlice.reducer,
   },
   preloadedState: loadFromLocalStorage(),
 });

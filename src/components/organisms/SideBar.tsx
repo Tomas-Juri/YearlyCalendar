@@ -1,45 +1,52 @@
 import { ClipboardDocumentListIcon } from "@heroicons/react/24/outline";
-import { useEffect, useState } from "react";
+import classNames from "classnames";
+import { useEffect } from "react";
 import { openAddEventModal, openEditEventModal } from "../../redux/eventsSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { closeSidebar, openSidebar } from "../../redux/sidebarSlice";
 import { distinct } from "../../utilities";
 import { Button } from "../atoms";
 
 export const SideBar = () => {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const dispatch = useAppDispatch();
+  const { isOpen } = useAppSelector((state) => state.sidebar);
   const events = useAppSelector((state) => state.events.events);
   const sortedEvents = [...events].sort((a, b) => new Date(a.from).getTime() - new Date(b.from).getTime());
-  const dispatch = useAppDispatch();
 
   const toggleDrawer = () => {
-    setIsDrawerOpen(!isDrawerOpen);
+    dispatch(openSidebar());
   };
 
   const closeDrawer = () => {
-    setIsDrawerOpen(false);
+    dispatch(closeSidebar());
   };
 
   // Handle keyboard navigation
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape" && isDrawerOpen) {
+      if (event.key === "Escape" && isOpen) {
         closeDrawer();
       }
     };
 
-    if (isDrawerOpen) {
+    if (isOpen) {
       document.addEventListener("keydown", handleKeyDown);
     }
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isDrawerOpen]);
+  }, [isOpen]);
   return (
     <>
-      <aside className="border-r border-gray-800">
+      <aside className="relative z-60 border-r border-gray-800 bg-gray-950">
         <button
-          className="flex size-16 cursor-pointer items-center justify-center border-b border-transparent text-gray-200 transition duration-300 hover:border-gray-800 hover:bg-sky-800 hover:text-white"
+          className={classNames(
+            "flex size-16 cursor-pointer items-center justify-center border-b border-transparent text-gray-200 transition duration-300 hover:border-gray-800",
+            "bg-gradient-to-br",
+            "hover:from-sky-600 hover:to-sky-700 hover:text-sky-50",
+            isOpen ? "from-sky-700 to-sky-800 text-sky-100" : "from-transparent to-transparent",
+          )}
           onClick={() => toggleDrawer()}
           title="Open events list"
         >
@@ -49,22 +56,13 @@ export const SideBar = () => {
 
       {/* Drawer */}
       <div
-        className={`fixed top-0 left-0 z-50 flex h-full w-96 max-w-[90vw] transform flex-col bg-gray-950 shadow-2xl transition-transform duration-300 ease-in-out ${
-          isDrawerOpen ? "translate-x-0" : "-translate-x-full"
+        className={`fixed top-[57px] left-[65px] z-50 flex h-[calc(100%-57px)] w-96 max-w-[90vw] transform flex-col border-r border-gray-800 bg-gray-950 shadow-2xl transition-transform duration-300 ease-in-out ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         {/* Drawer Header */}
-        <div className="flex flex-shrink-0 items-center justify-between border-b border-gray-900 p-4">
-          <h2 className="font-medium text-slate-200">Events</h2>
-          <button
-            onClick={closeDrawer}
-            className="-my-1 cursor-pointer rounded-lg p-1 transition-colors hover:bg-gray-500 focus:ring-2 focus:outline-none"
-            aria-label="Close events menu"
-          >
-            <svg className="h-5 w-5 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
+        <div className="flex flex-shrink-0 items-center justify-between border-b border-gray-900 px-4 py-3">
+          <h2 className="text-lg font-medium text-slate-200">Events</h2>
         </div>
 
         {/* Events List */}
@@ -117,7 +115,6 @@ export const SideBar = () => {
             fullWidth
             onClick={() => {
               dispatch(openAddEventModal());
-              closeDrawer();
             }}
           />
         </div>

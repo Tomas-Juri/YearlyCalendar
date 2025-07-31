@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import Holidays from "date-holidays";
 import { useVacationValidation } from "../../hooks/useVacationValidation";
 import { Event } from "../../redux/eventsSlice";
@@ -67,6 +68,7 @@ export const Calendar = () => {
 
     return {
       month: month,
+      isPast: month < today.getMonth() + 1 && year <= today.getFullYear(),
       offset, // number of leading empty cells
       days, // actual days of the month
     };
@@ -110,7 +112,14 @@ export const Calendar = () => {
           {monthModels.map((month) => (
             <div key={month.month} className="flex gap-1">
               <div>
-                <div className="flex h-8 w-14 flex-1 items-center justify-center border-2 border-gray-600 bg-gray-800 text-sm font-medium text-gray-200 2xl:h-9 2xl:w-16 2xl:text-base">
+                <div
+                  className={classNames(
+                    "flex h-8 w-14 flex-1 items-center justify-center border-2 text-sm font-medium 2xl:h-9 2xl:w-16 2xl:text-base",
+                    month.isPast
+                      ? "border-gray-700 bg-white/8 text-gray-500"
+                      : "border-gray-600 bg-gray-800 text-gray-200",
+                  )}
+                >
                   {monthName(month.month).substring(0, 3)}
                 </div>
               </div>

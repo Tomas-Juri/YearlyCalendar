@@ -1,4 +1,5 @@
 import { EventsState } from "../eventsSlice";
+import { SidebarState } from "../sidebarSlice";
 import { RootState } from "../store";
 import { migrations } from "./migrations";
 
@@ -7,7 +8,7 @@ type LocalStorageState = {
   state: RootState;
 };
 
-const CURRENT_VERSION = 1;
+const CURRENT_VERSION = 2;
 
 // convert object to string and store in localStorage
 export function saveToLocalStorage(state: RootState) {
@@ -25,13 +26,14 @@ export function saveToLocalStorage(state: RootState) {
 
 // load string from localStarage and convert into an Object
 // invalid output must be undefined
-export function loadFromLocalStorage(): { events: EventsState } | undefined {
+export function loadFromLocalStorage(): { events: EventsState; sidebar: SidebarState } | undefined {
   try {
     const serialisedState = localStorage.getItem("state");
     if (serialisedState === null) return undefined;
     const localStorageState = JSON.parse(serialisedState, reviver);
 
     applyMigrations(localStorageState.state);
+    localStorageState.version = CURRENT_VERSION; // Update version after migration
 
     return localStorageState.state;
   } catch (exception) {
@@ -62,15 +64,14 @@ function applyMigrations(state: object): object {
     return state;
   }
 
-  console.log(`Running migrations: ${migrationsToApply.map((m) => m.version).join(", ")}`);
+  console.log(`Running ${migrationsToApply.length} migrations: ${migrationsToApply.map((m) => m.version).join(", ")}`);
 
-  let migratedState = { ...state };
   for (const migration of migrationsToApply) {
     console.log(`Applying migration version ${migration.version}`);
-    migratedState = migration.migrate(state);
+    state = migration.migrate(state);
   }
 
   // Here you can implement migration logic if needed
   // For now, we just return the state as is
-  return migratedState;
+  return state;
 }
