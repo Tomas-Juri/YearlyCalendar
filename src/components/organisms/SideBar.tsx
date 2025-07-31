@@ -48,7 +48,8 @@ export const SideBar = () => {
             isOpen ? "from-sky-700 to-sky-800 text-sky-100" : "from-transparent to-transparent",
           )}
           onClick={() => {
-            isOpen ? closeDrawer() : openDrawer();
+            if (isOpen) closeDrawer();
+            else openDrawer();
           }}
           title="Open events list"
         >

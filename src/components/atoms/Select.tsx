@@ -21,7 +21,7 @@ export function Select<T>(props: Props<T>) {
         <>
           <ListboxButton
             className={classNames(
-              "relative flex items-center justify-between rounded-sm border-2 bg-gray-800 px-3.5 py-2.5 transition duration-300",
+              "relative flex w-full items-center justify-between rounded-sm border-2 bg-gray-800 px-3.5 py-2.5 transition duration-300",
               "focus:border-sky-500 focus:text-gray-100 focus:outline-none",
               "placeholder:text-gray-500",
               open ? "border-sky-500 text-gray-100" : "border-gray-600 text-gray-300",
