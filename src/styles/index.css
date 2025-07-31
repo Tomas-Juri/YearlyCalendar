@@ -1,0 +1,17 @@
+@layer theme, base, components, utilities;
+
+@import "tailwindcss";
+
+@theme {
+  --color-gray-50: #f6f7f9;
+  --color-gray-100: #eceef2;
+  --color-gray-200: #d5d8e2;
+  --color-gray-300: #b1b9c8;
+  --color-gray-400: #8692aa;
+  --color-gray-500: #677590;
+  --color-gray-600: #525d77;
+  --color-gray-700: #434c61;
+  --color-gray-800: #3a4252;
+  --color-gray-900: #343946;
+  --color-gray-950: #22252e;
+}

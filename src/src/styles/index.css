@@ -1,5 +1,0 @@
-@layer theme, base, primereact, components, utilities;
-
-@import "tailwindcss";
-@import "primereact/resources/themes/lara-light-indigo/theme.css"
-  layer(primereact);

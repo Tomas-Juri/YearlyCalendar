@@ -1,0 +1,89 @@
+@reference "../../styles/index.css";
+
+.day-cell {
+  @apply flex size-8 items-center justify-center border-2 border-gray-500 bg-gray-600 text-sm font-semibold text-gray-100 transition-all duration-300 2xl:size-9 2xl:text-base;
+}
+
+.day-cell.is-today {
+  @apply border-sky-500 text-gray-100;
+}
+
+.day-cell.is-weekend {
+  @apply border-gray-600 bg-gray-700 text-gray-200;
+}
+
+.day-cell.is-weekend.day-cell.is-past-day {
+  @apply border-gray-700 bg-white/5 text-gray-500;
+}
+
+.day-cell.is-past-day {
+  @apply border-gray-700 bg-white/8 text-gray-600;
+}
+
+.day-cell.is-holiday {
+  @apply border-gray-500/80 bg-gray-700/90 text-sky-400;
+}
+
+.day-cell.is-holiday.is-past-day {
+  @apply border-gray-700 bg-white/8 text-sky-600;
+}
+
+.day-cell.is-weekend.day-cell.is-holiday {
+  @apply text-sky-400;
+}
+
+.day-cell.has-event.is-full-day {
+  @apply border-sky-500 bg-sky-700 text-sky-50;
+}
+
+.day-cell.has-event.is-first-half {
+  @apply border-t-sky-500 border-l-sky-500;
+}
+
+.day-cell.is-first-half .day-cell-first-half {
+  @apply border-t-sky-700 border-l-sky-700;
+}
+
+.day-cell.has-event.is-second-half {
+  @apply border-r-sky-500 border-b-sky-500;
+}
+
+.day-cell.is-second-half .day-cell-second-half {
+  @apply border-r-sky-700 border-b-sky-700;
+}
+
+.day-cell.has-event.is-past-day {
+  @apply text-sky-400;
+}
+
+.day-cell.has-event.is-past-day.is-full-day {
+  @apply border-sky-900 bg-sky-800 text-sky-400;
+}
+
+.day-cell.has-event.is-past-day.is-first-half {
+  @apply border-t-sky-900 border-l-sky-900;
+}
+
+.day-cell.has-event.is-past-day.is-first-half .day-cell-first-half {
+  @apply border-t-sky-800 border-l-sky-800;
+}
+
+.day-cell.has-event.is-past-day.is-second-half {
+  @apply border-r-sky-900 border-b-sky-900;
+}
+
+.day-cell.has-event.is-second-half.is-past-day.is-first-half {
+  @apply border-r-sky-800 border-b-sky-800;
+}
+
+.day-cell .day-cell-second-half {
+  @apply pointer-events-none absolute right-[2px] bottom-[2px] border-[16px] border-transparent;
+}
+
+.day-cell .day-cell-first-half {
+  @apply pointer-events-none absolute top-[2px] left-[2px] border-[16px] border-transparent;
+}
+
+.day-cell .day-cell-text {
+  @apply relative z-10;
+}
