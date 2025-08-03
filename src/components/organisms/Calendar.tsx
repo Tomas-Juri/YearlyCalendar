@@ -96,25 +96,25 @@ export const Calendar = () => {
   return (
     <main className="flex flex-grow flex-col items-center justify-center overflow-x-auto px-6">
       <div>
-        <div className="mb-1 flex w-fit gap-1">
+        <div className="mb-0.5 flex w-fit gap-0.5 xl:mb-1 xl:gap-1">
           <div>
-            <div className="pointer-events-none flex h-8 w-14 items-center justify-center rounded-xs border-2 font-medium opacity-0 2xl:h-9 2xl:w-16" />
+            <div className="pointer-events-none flex h-7 w-12 items-center justify-center rounded-xs border-2 font-medium opacity-0 xl:h-8 xl:w-14 2xl:h-9 2xl:w-16" />
           </div>
           {headerDays.map((day, i) => (
             <div key={i}>
-              <div className="flex size-8 items-center justify-center border-2 border-gray-600 bg-gray-800 text-sm font-medium text-gray-200 2xl:size-9 2xl:text-base">
+              <div className="flex size-7 items-center justify-center border-2 border-gray-600 bg-gray-800 text-xs font-medium text-gray-200 xl:size-8 xl:text-sm 2xl:size-9 2xl:text-base">
                 {day.substring(0, 2)}
               </div>
             </div>
           ))}
         </div>
-        <div className="flex w-fit flex-col gap-1">
+        <div className="flex w-fit flex-col gap-0.5 xl:gap-1">
           {monthModels.map((month) => (
-            <div key={month.month} className="flex gap-1">
+            <div key={month.month} className="flex gap-0.5 xl:gap-1">
               <div>
                 <div
                   className={classNames(
-                    "flex h-8 w-14 flex-1 items-center justify-center border-2 text-sm font-medium 2xl:h-9 2xl:w-16 2xl:text-base",
+                    "flex h-7 w-12 flex-1 items-center justify-center border-2 text-xs font-medium xl:h-8 xl:w-14 xl:text-sm 2xl:h-9 2xl:w-16 2xl:text-base",
                     month.isPast
                       ? "border-gray-700 bg-white/8 text-gray-500"
                       : "border-gray-600 bg-gray-800 text-gray-200",
@@ -125,7 +125,7 @@ export const Calendar = () => {
               </div>
               {Array.from({ length: month.offset }).map((_, i) => (
                 <div key={i}>
-                  <div className="pointer-events-none flex size-8 flex-1 items-center justify-center border-2 text-sm font-medium opacity-0 2xl:size-9 2xl:text-base" />
+                  <div className="pointer-events-none flex size-7 flex-1 items-center justify-center border-2 text-xs font-medium opacity-0 xl:size-8 xl:text-sm 2xl:size-9 2xl:text-base" />
                 </div>
               ))}
               {month.days.map((day) => (

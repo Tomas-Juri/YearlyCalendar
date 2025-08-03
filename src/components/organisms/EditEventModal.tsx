@@ -1,7 +1,7 @@
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from "@headlessui/react";
 import { CheckIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
-import { closeEditEventModal, confirmEditEventModal } from "../../redux/eventsSlice";
+import { closeEditEventModal, confirmDeleteEvent, confirmEditEventModal } from "../../redux/eventsSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { DayType, DayTypes } from "../../types";
 import { compareDates } from "../../utilities/date";
@@ -58,7 +58,7 @@ export const EditEventModal = () => {
 
   const onDelete = () => {
     if (event) {
-      dispatch(confirmEditEventModal(event));
+      dispatch(confirmDeleteEvent(event));
     }
   };
 

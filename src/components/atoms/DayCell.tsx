@@ -149,7 +149,7 @@ export const DayCell = (props: Props) => {
       {!hasEvent && plusOpen && (
         <div
           ref={plusRef}
-          className="absolute top-full left-1/2 z-50 mt-2 flex min-w-[10rem] -translate-x-1/2 flex-col rounded border border-gray-700 bg-gray-800 px-4 py-2 text-sm text-slate-700 shadow"
+          className="mt-0.5s absolute top-full left-1/2 z-50 flex min-w-[10rem] -translate-x-1/2 flex-col rounded border border-gray-700 bg-gray-800 px-4 py-2 text-sm text-gray-700 shadow"
           style={{ pointerEvents: "auto" }}
         >
           <button

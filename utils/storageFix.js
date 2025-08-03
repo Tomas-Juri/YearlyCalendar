@@ -3,7 +3,8 @@ function fix() {
   if (state.version) {
     return;
   } else {
-    localStorage.setItem("state", JSON.stringify({ version: 1, state }));
+    const serialisedState = JSON.stringify({ version: 1, state });
+    localStorage.setItem("state", serialisedState);
   }
 }
 fix();
