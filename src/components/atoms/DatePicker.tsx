@@ -54,7 +54,6 @@ export const DatePicker = (props: Props) => {
 
   const [year, setYear] = useState<number>(selectedDate.getFullYear());
   const [month, setMonth] = useState<number>(selectedDate.getMonth()); // JS months are 0-based
-  const [popoverElement, setPopoverElement] = useState<HTMLDivElement | null>();
 
   const onNextMonthClick = () => {
     const nextMonth = new Date(year, month + 1, 1);
@@ -83,16 +82,13 @@ export const DatePicker = (props: Props) => {
 
   const onChange = (date: Date) => {
     props.onChange(date);
-    setYear(date.getFullYear());
-    setMonth(date.getMonth());
+    resetMonthAndYear();
   };
 
-  useEffect(() => {
-    if (!popoverElement) {
-      setYear(selectedDate.getFullYear());
-      setMonth(selectedDate.getMonth());
-    }
-  }, [popoverElement, selectedDate]);
+  const resetMonthAndYear = () => {
+    setYear(selectedDate.getFullYear());
+    setMonth(selectedDate.getMonth());
+  };
 
   return (
     <Popover>
@@ -109,7 +105,11 @@ export const DatePicker = (props: Props) => {
             {props.value ? props.value.toLocaleDateString("cs") : "Select a date"}
           </PopoverButton>
           <PopoverPanel
-            ref={setPopoverElement}
+            ref={(x) => {
+              if (!x) {
+                resetMonthAndYear();
+              }
+            }}
             transition
             anchor="bottom"
             className="relative z-5002 flex flex-col rounded-sm border-2 border-gray-700 bg-gray-800 shadow-lg shadow-black/30 transition duration-300 [--anchor-gap:--spacing(1)] focus:outline-none data-closed:-translate-y-2 data-closed:opacity-0"
