@@ -1,5 +1,6 @@
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from "@headlessui/react";
 import { CheckIcon } from "@heroicons/react/24/solid";
+import classNames from "classnames";
 import { useEffect, useState } from "react";
 import { closeEditEventModal, confirmDeleteEvent, confirmEditEventModal } from "../../redux/eventsSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
@@ -79,10 +80,19 @@ export const EditEventModal = () => {
   const toDayTypes = compareDates(from, to) ? [] : DayTypes.filter((type) => type !== "1st Half");
 
   return (
-    <Dialog open={opened} onClose={onClose} className="">
-      <DialogBackdrop className="fixed inset-0 z-5000 bg-black/60" />
+    <Dialog open={opened} onClose={onClose}>
+      <DialogBackdrop
+        transition
+        className="fixed inset-0 z-5000 bg-black/60 transition duration-300 data-closed:opacity-0"
+      />
       <div className="fixed inset-0 z-5001 flex w-screen items-center justify-center">
-        <DialogPanel className="max-w-lg min-w-[28rem] space-y-6 rounded-sm border-2 border-white/5 bg-gray-950 px-8 pt-8 pb-6">
+        <DialogPanel
+          transition
+          className={classNames(
+            "max-w-lg min-w-[28rem] space-y-6 rounded-sm border-2 border-white/5 bg-gray-950 px-8 pt-8 pb-6",
+            "transition duration-300 data-closed:transform-[scale(95%)] data-closed:opacity-0",
+          )}
+        >
           <DialogTitle className="text-xl font-semibold text-gray-100">Edit event</DialogTitle>
           <form action="" className="space-y-4" onSubmit={handleSubmit}>
             <Field

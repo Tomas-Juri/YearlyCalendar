@@ -20,8 +20,8 @@ export const YearPicker = () => {
           anchor="bottom"
           transition
           className={classNames(
-            "absolute top-full right-0 z-50 rounded-xs border border-gray-700 bg-gray-800 shadow-lg [--anchor-gap:--spacing(1)] [--anchor-max-height:15rem]",
-            "transition duration-100 data-closed:data-closed:opacity-0",
+            "absolute top-full right-0 z-50 w-(--button-width) rounded-xs border border-gray-700 bg-gray-800 shadow-lg [--anchor-gap:--spacing(1)] [--anchor-max-height:15rem]",
+            "transition duration-100 focus:outline-none data-closed:data-closed:opacity-0",
           )}
         >
           {years.map((year) => (
